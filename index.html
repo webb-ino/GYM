@@ -4,8 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>Aarav's Training Log</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,7 +12,6 @@
     --bg: #0a0a0a;
     --card: #171717;
     --border: #262626;
-    --border-light: #2e2e2e;
     --orange: #f97316;
     --orange-dim: rgba(249,115,22,0.12);
     --orange-border: rgba(249,115,22,0.35);
@@ -21,195 +19,150 @@
     --muted: #a3a3a3;
     --subtle: #525252;
     --sky: #38bdf8;
+    --sky-dim: rgba(56,189,248,0.08);
+    --sky-border: rgba(56,189,248,0.28);
     --indigo: #818cf8;
   }
 
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
 
-  .app {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 24px 16px 64px;
-  }
+  .app { max-width: 480px; margin: 0 auto; padding: 24px 16px 64px; }
 
   /* ── Header ── */
   .header { margin-bottom: 24px; }
-  .header-eyebrow {
-    display: flex; align-items: center; gap: 6px;
-    margin-bottom: 4px;
-  }
-  .flame-icon { font-size: 16px; }
-  .eyebrow-text {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--orange);
-  }
-  .header h1 {
-    font-size: 26px; font-weight: 900;
-    letter-spacing: -0.03em; line-height: 1.1;
-    text-transform: uppercase;
-  }
+  .header-eyebrow { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .eyebrow-text { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); }
+  .header h1 { font-size: 26px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; text-transform: uppercase; }
 
-  /* ── Stat cards ── */
-  .stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 8px; margin-bottom: 20px;
-  }
-  .stat-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 12px 10px;
-  }
-  .stat-value {
-    font-size: 22px; font-weight: 900;
-    line-height: 1; color: var(--text);
-  }
+  /* ── Stats ── */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px 10px; }
+  .stat-value { font-size: 22px; font-weight: 900; line-height: 1; color: var(--text); }
   .stat-value.orange { color: var(--orange); }
-  .stat-label {
-    font-size: 9px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--subtle); margin-top: 4px;
-  }
+  .stat-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--subtle); margin-top: 4px; }
 
   /* ── Day chips ── */
-  .day-row {
-    display: flex; gap: 6px;
-    overflow-x: auto; padding-bottom: 4px;
-    margin-bottom: 16px;
-    scrollbar-width: none;
-  }
+  .day-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; scrollbar-width: none; }
   .day-row::-webkit-scrollbar { display: none; }
   .day-chip {
-    flex-shrink: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    width: 44px; height: 58px;
-    border-radius: 12px; border: 1px solid var(--border);
+    flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 44px; height: 58px; border-radius: 12px; border: 1px solid var(--border);
     background: var(--card); color: var(--muted);
     cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .day-chip.active {
-    background: var(--orange); border-color: var(--orange); color: #000;
-  }
+  .day-chip.active { background: var(--orange); border-color: var(--orange); color: #000; }
   .day-chip-day { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
   .day-chip-num { font-size: 13px; font-weight: 800; margin-top: 2px; }
-  .day-chip-dot {
-    width: 5px; height: 5px; border-radius: 50%; margin-top: 3px;
-  }
+  .day-chip-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 3px; }
   .day-chip-dot.filled { background: var(--orange); }
   .day-chip.active .day-chip-dot.filled { background: #000; }
-  .day-chip-dot.empty { background: transparent; }
 
   /* ── Day card ── */
-  .day-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 16px; margin-bottom: 20px;
-  }
-  .day-card-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 12px;
-  }
+  .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 16px; margin-bottom: 20px; }
+  .day-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .day-title { font-size: 17px; font-weight: 800; }
   .day-subtitle { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .day-pct { font-size: 22px; font-weight: 900; color: var(--orange); }
+  .progress-bar { width: 100%; height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 14px; }
+  .progress-fill { height: 100%; background: var(--orange); border-radius: 99px; transition: width 0.3s ease; }
 
-  .progress-bar {
-    width: 100%; height: 4px;
-    background: var(--border); border-radius: 99px;
-    overflow: hidden; margin-bottom: 14px;
-  }
-  .progress-fill {
-    height: 100%; background: var(--orange);
-    border-radius: 99px; transition: width 0.3s ease;
-  }
-
-  /* ── Exercise rows ── */
+  /* ── Exercises ── */
   .exercises { display: flex; flex-direction: column; gap: 6px; }
   .ex-row {
     display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    cursor: pointer; transition: background 0.12s, border-color 0.12s;
-    -webkit-tap-highlight-color: transparent;
-    text-align: left; width: 100%;
+    padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--bg); cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    -webkit-tap-highlight-color: transparent; text-align: left; width: 100%;
   }
-  .ex-row.done {
-    background: var(--orange-dim);
-    border-color: var(--orange-border);
-  }
+  .ex-row.done { background: var(--orange-dim); border-color: var(--orange-border); }
   .ex-checkbox {
-    flex-shrink: 0; width: 20px; height: 20px;
-    border-radius: 6px; border: 2px solid var(--subtle);
-    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px;
+    border: 2px solid var(--subtle); display: flex; align-items: center; justify-content: center;
     transition: background 0.12s, border-color 0.12s;
   }
-  .ex-row.done .ex-checkbox {
-    background: var(--orange); border-color: var(--orange);
-  }
-  .checkmark {
-    display: none; color: #000;
-    font-size: 11px; font-weight: 900; line-height: 1;
-  }
+  .ex-row.done .ex-checkbox { background: var(--orange); border-color: var(--orange); }
+  .checkmark { display: none; color: #000; font-size: 11px; font-weight: 900; line-height: 1; }
   .ex-row.done .checkmark { display: block; }
-  .ex-label {
-    font-size: 13px; color: var(--text);
-    transition: color 0.12s;
-  }
-  .ex-row.done .ex-label {
-    color: var(--muted); text-decoration: line-through;
-  }
+  .ex-label { font-size: 13px; color: var(--text); transition: color 0.12s; }
+  .ex-row.done .ex-label { color: var(--muted); text-decoration: line-through; }
 
-  /* ── Chart ── */
-  .chart-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 16px; margin-bottom: 20px;
+  /* ── Stretching ── */
+  .stretch-section { margin-top: 10px; }
+  .stretch-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 10px 12px;
+    background: var(--sky-dim); border: 1px solid var(--sky-border);
+    border-radius: 12px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; transition: background 0.15s;
   }
+  .stretch-toggle:active { background: rgba(56,189,248,0.14); }
+  .stretch-toggle-left { display: flex; align-items: center; gap: 7px; }
+  .stretch-toggle-label { font-size: 12px; font-weight: 700; color: var(--sky); }
+  .stretch-count { font-size: 10px; color: var(--sky); opacity: 0.7; margin-left: 4px; }
+  .stretch-chevron { font-size: 10px; color: var(--sky); transition: transform 0.25s; }
+  .stretch-chevron.open { transform: rotate(180deg); }
+  .stretch-list { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
+  .stretch-list.hidden { display: none; }
+  .stretch-row {
+    display: flex; align-items: center; gap: 9px; padding: 9px 12px;
+    border-radius: 10px; border: 1px solid var(--border); background: var(--bg);
+    cursor: pointer; width: 100%;
+    -webkit-tap-highlight-color: transparent; transition: background 0.12s, border-color 0.12s;
+  }
+  .stretch-row.done { background: var(--sky-dim); border-color: var(--sky-border); }
+  .stretch-checkbox {
+    flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--subtle); display: flex; align-items: center; justify-content: center;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .stretch-row.done .stretch-checkbox { background: var(--sky); border-color: var(--sky); }
+  .stretch-check { display: none; color: #000; font-size: 9px; font-weight: 900; }
+  .stretch-row.done .stretch-check { display: block; }
+  .stretch-label { font-size: 12px; color: var(--muted); }
+  .stretch-row.done .stretch-label { color: var(--subtle); text-decoration: line-through; }
+
+  /* ── Charts row ── */
+  .charts-row { display: grid; grid-template-columns: 1fr 140px; gap: 8px; margin-bottom: 20px; align-items: start; }
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 14px; }
+  .chart-card--pie { display: flex; flex-direction: column; align-items: center; gap: 10px; }
   .chart-title {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--muted); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px;
   }
-  .chart-title .icon { color: var(--orange); font-size: 14px; }
+  .chart-title .icon { color: var(--orange); font-size: 13px; }
   canvas#chart { width: 100% !important; display: block; }
+  canvas#pie { display: block; }
+  .pie-title {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; text-align: center;
+  }
+  .pie-title .icon { color: var(--orange); }
+  .pie-legend { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+  .pie-legend-item { display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .pie-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
   /* ── Reminders ── */
   .reminders { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .reminder-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 12px 10px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .reminder-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px 10px; display: flex; align-items: center; gap: 8px; }
   .reminder-icon { font-size: 16px; flex-shrink: 0; }
   .reminder-text { font-size: 11px; color: var(--muted); line-height: 1.35; }
 
   /* ── Save status ── */
-  .save-status {
-    text-align: center; font-size: 10px;
-    color: var(--subtle); margin-top: 20px;
-    letter-spacing: 0.05em; min-height: 16px;
-  }
+  .save-status { text-align: center; font-size: 10px; color: var(--subtle); margin-top: 20px; letter-spacing: 0.05em; min-height: 16px; }
 
-  /* ── Loading overlay ── */
-  #loading {
-    position: fixed; inset: 0; background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 100; transition: opacity 0.3s;
-  }
+  /* ── Loading ── */
+  #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 100; transition: opacity 0.3s; }
   #loading.hidden { opacity: 0; pointer-events: none; }
-  .spinner {
-    width: 32px; height: 32px;
-    border: 3px solid var(--border);
-    border-top-color: var(--orange);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
+  .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
@@ -218,74 +171,72 @@
 <div id="loading"><div class="spinner"></div></div>
 
 <div class="app">
-  <!-- Header -->
   <div class="header">
     <div class="header-eyebrow">
-      <span class="flame-icon">🔥</span>
+      <span>🔥</span>
       <span class="eyebrow-text">Aesthetic Build</span>
     </div>
     <h1>Aarav's<br>Training Log</h1>
   </div>
 
-  <!-- Stats -->
   <div class="stats">
-    <div class="stat-card">
-      <div class="stat-value orange" id="stat-streak">0</div>
-      <div class="stat-label">Day Streak</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="stat-pct">0%</div>
-      <div class="stat-label">Today</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="stat-done">0/0</div>
-      <div class="stat-label">Done</div>
-    </div>
+    <div class="stat-card"><div class="stat-value orange" id="stat-streak">0</div><div class="stat-label">Day Streak</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-pct">0%</div><div class="stat-label">Today</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-done">0/0</div><div class="stat-label">Done</div></div>
   </div>
 
-  <!-- Day row -->
   <div class="day-row" id="day-row"></div>
 
-  <!-- Day card -->
   <div class="day-card">
     <div class="day-card-header">
       <div>
-        <div class="day-title" id="day-title">Monday</div>
+        <div class="day-title" id="day-title">—</div>
         <div class="day-subtitle" id="day-subtitle"></div>
       </div>
       <div class="day-pct" id="day-pct">0%</div>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
     <div class="exercises" id="exercises"></div>
+
+    <!-- Stretching -->
+    <div class="stretch-section">
+      <button class="stretch-toggle" id="stretch-toggle">
+        <span class="stretch-toggle-left">
+          <span>🧘</span>
+          <span class="stretch-toggle-label">Daily Whole Body Stretching</span>
+          <span class="stretch-count" id="stretch-count"></span>
+        </span>
+        <span class="stretch-chevron" id="stretch-chevron">▼</span>
+      </button>
+      <div class="stretch-list hidden" id="stretch-list"></div>
+    </div>
   </div>
 
-  <!-- Chart -->
-  <div class="chart-card">
-    <div class="chart-title"><span class="icon">📈</span> 14-Day Progress</div>
-    <canvas id="chart" height="140"></canvas>
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title"><span class="icon">📈</span> 14-Day Progress</div>
+      <canvas id="chart" height="130"></canvas>
+    </div>
+    <div class="chart-card chart-card--pie">
+      <div class="pie-title"><span class="icon">🎯</span> Today</div>
+      <canvas id="pie" width="110" height="110"></canvas>
+      <div class="pie-legend" id="pie-legend"></div>
+    </div>
   </div>
 
-  <!-- Reminders -->
   <div class="reminders">
-    <div class="reminder-card">
-      <span class="reminder-icon">💧</span>
-      <span class="reminder-text">2.5–3L water daily</span>
-    </div>
-    <div class="reminder-card">
-      <span class="reminder-icon">🌙</span>
-      <span class="reminder-text">8 hrs sleep = growth</span>
-    </div>
+    <div class="reminder-card"><span class="reminder-icon">💧</span><span class="reminder-text">2.5–3L water daily</span></div>
+    <div class="reminder-card"><span class="reminder-icon">🌙</span><span class="reminder-text">8 hrs sleep = growth</span></div>
   </div>
 
   <div class="save-status" id="save-status">Loading…</div>
 </div>
 
-<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ── Firebase config ──────────────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyA62U6L7iQNoxDQIn5HYB4cVFiuuT5K30o",
   authDomain: "my-universe-543f0.firebaseapp.com",
@@ -301,46 +252,55 @@ const DOC_REF = doc(db, "trackers", "aarav-checks");
 
 // ── Workout plan ─────────────────────────────────────────────────
 const PLAN = {
-  Sunday:    { tag: "Rest & Recovery",      focus: "",               exercises: ["Complete rest", "Hydrate — 3L water minimum", "Light walk (optional)"] },
-  Monday:    { tag: "Push + Shoulders",     focus: "Aesthetic Focus", exercises: ["Push-ups 4×12–20","Decline Push-ups 3×8–15","Pike Push-ups 3×8–12","Lateral Raises 3×12–15","Chair Dips 3×10–15","Overhead Press (backpack) 3×10–12","Leg Raises 3×12–15","Bicycle Crunches 3×20","Plank 3×60s"] },
-  Tuesday:   { tag: "Pull + Back Width",    focus: "V-Taper",        exercises: ["Pull-ups 4×max","Chin-ups 3×max","Backpack Rows 3×12–15","Face Pulls / Rear Delt Rows 3×12–15","Backpack Curls 3×12–15","Hanging Knee Raises 3×10–15","Side Plank 3×30s each"] },
-  Wednesday: { tag: "Legs + Core",          focus: "",               exercises: ["Squats 4×20","Bulgarian Split Squats 3×10 each","Lunges 3×12 each","Glute Bridges 3×15","Calf Raises 4×20","Wall Sit 2×60s","Russian Twists 3×20","Reverse Crunches 3×15","Ab Wheel / Dragon Flag Negatives 3×8–10"] },
-  Thursday:  { tag: "Active Rest",          focus: "Mobility",       exercises: ["Walk or light jog 15–20 min","Full body stretching 10 min","Foam roll / massage 5 min"] },
-  Friday:    { tag: "Full Body",            focus: "Conditioning",   exercises: ["Push-ups 3×max","Pull-ups 3×max","Squats 3×20","Pike Push-ups 2×10","Burpees 3×10","Plank to Push-up 2×10","Plank 2×90s"] },
-  Saturday:  { tag: "Arms + Aesthetics",    focus: "Pump",           exercises: ["Backpack Curls 4×12–15","Hammer Curls 3×12","Chair Dips 4×12–15","Diamond Push-ups 3×10–12","Lateral Raises 3×15","Wrist Curls / Forearm Work 3×15"] },
+  Sunday:    { tag: "Rest & Recovery",   focus: "",                exercises: ["Complete rest", "Hydrate — 3L water minimum", "Light walk (optional)"] },
+  Monday:    { tag: "Push + Shoulders",  focus: "Aesthetic Focus", exercises: ["Push-ups 4×12–20","Decline Push-ups 3×8–15","Pike Push-ups 3×8–12","Lateral Raises 3×12–15","Chair Dips 3×10–15","Overhead Press (backpack) 3×10–12","Leg Raises 3×12–15","Bicycle Crunches 3×20","Plank 3×60s"] },
+  Tuesday:   { tag: "Pull + Back Width", focus: "V-Taper",         exercises: ["Pull-ups 4×max","Chin-ups 3×max","Backpack Rows 3×12–15","Face Pulls / Rear Delt Rows 3×12–15","Backpack Curls 3×12–15","Hanging Knee Raises 3×10–15","Side Plank 3×30s each"] },
+  Wednesday: { tag: "Legs + Core",       focus: "",                exercises: ["Squats 4×20","Bulgarian Split Squats 3×10 each","Lunges 3×12 each","Glute Bridges 3×15","Calf Raises 4×20","Wall Sit 2×60s","Russian Twists 3×20","Reverse Crunches 3×15","Ab Wheel / Dragon Flag Negatives 3×8–10"] },
+  Thursday:  { tag: "Active Rest",       focus: "Mobility",        exercises: ["Walk or light jog 15–20 min","Full body stretching 10 min","Foam roll / massage 5 min"] },
+  Friday:    { tag: "Full Body",         focus: "Conditioning",    exercises: ["Push-ups 3×max","Pull-ups 3×max","Squats 3×20","Pike Push-ups 2×10","Burpees 3×10","Plank to Push-up 2×10","Plank 2×90s"] },
+  Saturday:  { tag: "Arms + Aesthetics", focus: "Pump",            exercises: ["Backpack Curls 4×12–15","Hammer Curls 3×12","Chair Dips 4×12–15","Diamond Push-ups 3×10–12","Lateral Raises 3×15","Wrist Curls / Forearm Work 3×15"] },
 };
+
+// ── Daily stretching (same every day) ───────────────────────────
+const STRETCHES = [
+  "Neck rolls — 30s each side",
+  "Chest opener / doorway stretch — 30s",
+  "Shoulder cross-body stretch — 30s each",
+  "Tricep overhead stretch — 20s each",
+  "Cat-Cow spinal stretch — 10 reps",
+  "Child's Pose — 45s",
+  "Hip flexor lunge stretch — 30s each",
+  "Seated hamstring stretch — 30s each",
+  "Pigeon pose / figure-4 — 30s each",
+  "Standing quad stretch — 20s each",
+  "Calf wall stretch — 20s each",
+  "Full body overhead reach — 10 reps",
+];
+
 const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 // ── Helpers ──────────────────────────────────────────────────────
 function dateKey(d = new Date()) {
-  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-function dayName(dateStr) { return DAY_NAMES[new Date(dateStr + "T00:00:00").getDay()]; }
+function dayName(ds) { return DAY_NAMES[new Date(ds + "T00:00:00").getDay()]; }
 function last14() {
   const out = [];
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    out.push(dateKey(d));
-  }
+  for (let i = 13; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate()-i); out.push(dateKey(d)); }
   return out;
 }
-function pctForDate(dateStr, checks) {
-  const dn = dayName(dateStr);
-  const exs = PLAN[dn].exercises;
-  const dc = checks[dateStr] || {};
-  const done = exs.filter((_, i) => dc[i]).length;
-  return exs.length ? Math.round((done / exs.length) * 100) : 0;
+function pctForDate(ds, checks) {
+  const exs = PLAN[dayName(ds)].exercises;
+  const dc = checks[ds] || {};
+  return exs.length ? Math.round((exs.filter((_,i) => dc['ex_'+i]).length / exs.length) * 100) : 0;
 }
 function computeStreak(checks) {
   let s = 0;
   for (let i = 0; i < 90; i++) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const key = dateKey(d);
-    const p = pctForDate(key, checks);
-    if (i === 0 && p < 100) continue; // today incomplete doesn't break streak
-    if (p === 100) s++;
-    else break;
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const p = pctForDate(dateKey(d), checks);
+    if (i === 0 && p < 100) continue;
+    if (p === 100) s++; else break;
   }
   return s;
 }
@@ -348,67 +308,73 @@ function computeStreak(checks) {
 // ── State ────────────────────────────────────────────────────────
 let checks = {};
 let selectedDate = dateKey();
+let stretchOpen = false;
 let saveTimer = null;
 
-// ── Firebase persistence ─────────────────────────────────────────
-async function loadFromFirestore() {
+// ── localStorage cache ───────────────────────────────────────────
+const LS_KEY = "aarav-checks-v1";
+function saveToLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(checks)); } catch(e) {} }
+function loadFromLocal() { try { const v = localStorage.getItem(LS_KEY); if (v) checks = JSON.parse(v); } catch(e) {} }
+
+// ── Firebase (background sync) ───────────────────────────────────
+async function syncFirestore() {
   try {
     const snap = await getDoc(DOC_REF);
-    if (snap.exists()) checks = snap.data().checks || {};
-  } catch (e) {
-    console.warn("Firestore load failed, using empty state:", e);
-  }
+    if (snap.exists()) {
+      checks = Object.assign({}, checks, snap.data().checks || {});
+      saveToLocal();
+      renderAll();
+    }
+  } catch(e) { console.warn("Firestore sync failed:", e); }
 }
-
 function scheduleSave() {
   setStatus("Saving…");
   clearTimeout(saveTimer);
+  saveToLocal();
   saveTimer = setTimeout(async () => {
     try {
       await setDoc(DOC_REF, { checks });
       setStatus("Saved ✓");
       setTimeout(() => setStatus(""), 2000);
-    } catch (e) {
-      setStatus("Save failed — check connection");
-      console.error(e);
-    }
+    } catch(e) { setStatus("⚠ Offline — saved locally"); }
   }, 800);
 }
+function setStatus(msg) { document.getElementById("save-status").textContent = msg; }
 
-function setStatus(msg) {
-  document.getElementById("save-status").textContent = msg;
+// ── Toggle stretch ───────────────────────────────────────────────
+function toggleStretch() {
+  stretchOpen = !stretchOpen;
+  document.getElementById("stretch-list").classList.toggle("hidden", !stretchOpen);
+  document.getElementById("stretch-chevron").classList.toggle("open", stretchOpen);
 }
+document.getElementById("stretch-toggle").addEventListener("click", toggleStretch);
 
-// ── Render ───────────────────────────────────────────────────────
+// ── Render day row ───────────────────────────────────────────────
 function renderDayRow() {
   const row = document.getElementById("day-row");
   row.innerHTML = "";
-  const days = last14().slice(-7);
-  const today = dateKey();
-  days.forEach(ds => {
-    const chip = document.createElement("button");
-    chip.className = "day-chip" + (ds === selectedDate ? " active" : "");
-    const dn = dayName(ds);
-    const p = pctForDate(ds, checks);
-    const full = p === 100;
-    const dateNum = new Date(ds + "T00:00:00").getDate();
-    chip.innerHTML = `
-      <span class="day-chip-day">${dn.slice(0,3)}</span>
-      <span class="day-chip-num">${dateNum}</span>
-      <span class="day-chip-dot ${full ? 'filled' : 'empty'}"></span>`;
-    chip.addEventListener("click", () => { selectedDate = ds; render(); });
-    row.appendChild(chip);
+  last14().slice(-7).forEach(ds => {
+    const btn = document.createElement("button");
+    btn.className = "day-chip" + (ds === selectedDate ? " active" : "");
+    const full = pctForDate(ds, checks) === 100;
+    const num = new Date(ds + "T00:00:00").getDate();
+    btn.innerHTML = `<span class="day-chip-day">${dayName(ds).slice(0,3)}</span><span class="day-chip-num">${num}</span><span class="day-chip-dot ${full?'filled':''}"></span>`;
+    btn.addEventListener("click", () => { selectedDate = ds; renderAll(); });
+    row.appendChild(btn);
   });
 }
 
+// ── Render day card ──────────────────────────────────────────────
 function renderDayCard() {
   const dn = dayName(selectedDate);
   const plan = PLAN[dn];
   const dc = checks[selectedDate] || {};
-  const done = plan.exercises.filter((_, i) => dc[i]).length;
-  const total = plan.exercises.length;
-  const pct = total ? Math.round((done / total) * 100) : 0;
   const isToday = selectedDate === dateKey();
+
+  // exercises
+  const done = plan.exercises.filter((_,i) => dc['ex_'+i]).length;
+  const total = plan.exercises.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
 
   document.getElementById("day-title").textContent = dn + (isToday ? " · Today" : "");
   document.getElementById("day-subtitle").textContent = plan.tag + (plan.focus ? ` — ${plan.focus}` : "");
@@ -418,138 +384,36 @@ function renderDayCard() {
   const exEl = document.getElementById("exercises");
   exEl.innerHTML = "";
   plan.exercises.forEach((ex, idx) => {
-    const isDone = !!dc[idx];
+    const isDone = !!dc['ex_'+idx];
     const btn = document.createElement("button");
     btn.className = "ex-row" + (isDone ? " done" : "");
-    btn.innerHTML = `
-      <span class="ex-checkbox"><span class="checkmark">✓</span></span>
-      <span class="ex-label">${ex}</span>`;
+    btn.innerHTML = `<span class="ex-checkbox"><span class="checkmark">✓</span></span><span class="ex-label">${ex}</span>`;
     btn.addEventListener("click", () => {
       const d = checks[selectedDate] = checks[selectedDate] || {};
-      d[idx] = !d[idx];
-      renderAll();
-      scheduleSave();
+      d['ex_'+idx] = !d['ex_'+idx];
+      renderAll(); scheduleSave();
     });
     exEl.appendChild(btn);
   });
-}
 
-function renderStats() {
-  const today = dateKey();
-  const dn = dayName(today);
-  const plan = PLAN[dn];
-  const dc = checks[today] || {};
-  const done = plan.exercises.filter((_, i) => dc[i]).length;
-  const total = plan.exercises.length;
-  const pct = total ? Math.round((done / total) * 100) : 0;
+  // stretches
+  const stretchDone = STRETCHES.filter((_,i) => dc['st_'+i]).length;
+  document.getElementById("stretch-count").textContent = `${stretchDone}/${STRETCHES.length}`;
 
-  document.getElementById("stat-streak").textContent = computeStreak(checks);
-  document.getElementById("stat-pct").textContent = pct + "%";
-  document.getElementById("stat-done").textContent = `${done}/${total}`;
-}
-
-// ── SVG Line Chart ───────────────────────────────────────────────
-function renderChart() {
-  const canvas = document.getElementById("chart");
-  const dpr = window.devicePixelRatio || 1;
-  const W = canvas.offsetWidth || 340;
-  const H = 140;
-  canvas.width = W * dpr;
-  canvas.height = H * dpr;
-  canvas.style.height = H + "px";
-  const ctx = canvas.getContext("2d");
-  ctx.scale(dpr, dpr);
-
-  const PAD = { top: 10, right: 10, bottom: 28, left: 30 };
-  const cW = W - PAD.left - PAD.right;
-  const cH = H - PAD.top - PAD.bottom;
-  const dates = last14();
-  const data = dates.map(ds => pctForDate(ds, checks));
-  const n = dates.length;
-
-  ctx.clearRect(0, 0, W, H);
-
-  // grid lines
-  [0, 25, 50, 75, 100].forEach(y => {
-    const cy = PAD.top + cH - (y / 100) * cH;
-    ctx.beginPath();
-    ctx.strokeStyle = "#262626";
-    ctx.lineWidth = 1;
-    ctx.setLineDash([3, 3]);
-    ctx.moveTo(PAD.left, cy);
-    ctx.lineTo(PAD.left + cW, cy);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = "#525252";
-    ctx.font = "9px Inter, system-ui";
-    ctx.textAlign = "right";
-    ctx.fillText(y, PAD.left - 4, cy + 3);
-  });
-
-  // x labels (every other)
-  dates.forEach((ds, i) => {
-    if (i % 2 !== 0) return;
-    const d = new Date(ds + "T00:00:00");
-    const label = `${d.getDate()}/${d.getMonth()+1}`;
-    const x = PAD.left + (i / (n - 1)) * cW;
-    ctx.fillStyle = "#525252";
-    ctx.font = "9px Inter, system-ui";
-    ctx.textAlign = "center";
-    ctx.fillText(label, x, H - 6);
-  });
-
-  // line
-  ctx.beginPath();
-  ctx.strokeStyle = "#f97316";
-  ctx.lineWidth = 2.5;
-  ctx.lineJoin = "round";
-  ctx.lineCap = "round";
-  data.forEach((p, i) => {
-    const x = PAD.left + (i / (n - 1)) * cW;
-    const y = PAD.top + cH - (p / 100) * cH;
-    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  });
-  ctx.stroke();
-
-  // dots
-  data.forEach((p, i) => {
-    const x = PAD.left + (i / (n - 1)) * cW;
-    const y = PAD.top + cH - (p / 100) * cH;
-    ctx.beginPath();
-    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
-    ctx.fillStyle = "#f97316";
-    ctx.fill();
-    if (p > 0) {
-      ctx.beginPath();
-      ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#0a0a0a";
-      ctx.fill();
-    }
+  const stEl = document.getElementById("stretch-list");
+  stEl.innerHTML = "";
+  STRETCHES.forEach((st, idx) => {
+    const isDone = !!dc['st_'+idx];
+    const btn = document.createElement("button");
+    btn.className = "stretch-row" + (isDone ? " done" : "");
+    btn.innerHTML = `<span class="stretch-checkbox"><span class="stretch-check">✓</span></span><span class="stretch-label">${st}</span>`;
+    btn.addEventListener("click", () => {
+      const d = checks[selectedDate] = checks[selectedDate] || {};
+      d['st_'+idx] = !d['st_'+idx];
+      renderAll(); scheduleSave();
+    });
+    stEl.appendChild(btn);
   });
 }
 
-function renderAll() {
-  renderStats();
-  renderDayRow();
-  renderDayCard();
-  renderChart();
-}
-
-function render() { renderAll(); }
-
-// ── Boot ─────────────────────────────────────────────────────────
-(async () => {
-  await loadFromFirestore();
-  renderAll();
-  // hide loading overlay
-  const loading = document.getElementById("loading");
-  loading.classList.add("hidden");
-  setTimeout(() => loading.remove(), 400);
-  setStatus("");
-})();
-
-// re-draw chart on resize
-window.addEventListener("resize", () => { renderChart(); });
-</script>
-</body>
-</html>
+// ── Rend
