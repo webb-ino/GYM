@@ -712,8 +712,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-window.auth = getAuth(app);
-window.db = getFirestore(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.auth = auth;
+window.db = db;
 
 window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
 window.signInWithEmailAndPassword = signInWithEmailAndPassword;
@@ -724,6 +727,8 @@ window.getDoc = getDoc;
 window.onAuthStateChanged = onAuthStateChanged;
 
 window.registerUser = async () => {
+
+alert("Register button clicked");
 
 try {
 
@@ -811,7 +816,21 @@ document.getElementById("authBox").style.display = "block";
 }
 
 });
+onAuthStateChanged(auth, async (user) => {
 
+if(user){
+
+document.getElementById("authBox").style.display = "none";
+
+await loadUserData();
+
+}else{
+
+document.getElementById("authBox").style.display = "block";
+
+}
+
+});
 </script>
  
 </body>
