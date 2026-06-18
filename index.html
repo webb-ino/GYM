@@ -159,16 +159,10 @@
   /* ── Save status ── */
   .save-status { text-align: center; font-size: 10px; color: var(--subtle); margin-top: 20px; letter-spacing: 0.05em; min-height: 16px; }
 
-  /* ── Loading ── */
-  #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 100; transition: opacity 0.3s; }
-  #loading.hidden { opacity: 0; pointer-events: none; }
-  .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<div id="loading"><div class="spinner"></div></div>
 
 <div class="app">
   <div class="header">
@@ -233,32 +227,17 @@
   <div class="save-status" id="save-status">Loading…</div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyA62U6L7iQNoxDQIn5HYB4cVFiuuT5K30o",
-  authDomain: "my-universe-543f0.firebaseapp.com",
-  projectId: "my-universe-543f0",
-  storageBucket: "my-universe-543f0.firebasestorage.app",
-  messagingSenderId: "724042081619",
-  appId: "1:724042081619:web:dda5defafe7d9c26e22da6",
-  measurementId: "G-5G2EQH2F40"
-};
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
-const DOC_REF = doc(db, "trackers", "aarav-checks");
+<script>
 
 // ── Workout plan ─────────────────────────────────────────────────
 const PLAN = {
   Sunday:    { tag: "Rest & Recovery",   focus: "",                exercises: ["Complete rest", "Hydrate — 3L water minimum", "Light walk (optional)"] },
-  Monday:    { tag: "Push + Shoulders",  focus: "Aesthetic Focus", exercises: ["Push-ups 4×12–20","Decline Push-ups 3×8–15","Pike Push-ups 3×8–12","Lateral Raises 3×12–15","Chair Dips 3×10–15","Overhead Press (backpack) 3×10–12","Leg Raises 3×12–15","Bicycle Crunches 3×20","Plank 3×60s"] },
-  Tuesday:   { tag: "Pull + Back Width", focus: "V-Taper",         exercises: ["Pull-ups 4×max","Chin-ups 3×max","Backpack Rows 3×12–15","Face Pulls / Rear Delt Rows 3×12–15","Backpack Curls 3×12–15","Hanging Knee Raises 3×10–15","Side Plank 3×30s each"] },
-  Wednesday: { tag: "Legs + Core",       focus: "",                exercises: ["Squats 4×20","Bulgarian Split Squats 3×10 each","Lunges 3×12 each","Glute Bridges 3×15","Calf Raises 4×20","Wall Sit 2×60s","Russian Twists 3×20","Reverse Crunches 3×15","Ab Wheel / Dragon Flag Negatives 3×8–10"] },
+  Monday:    { tag: "Push + Shoulders",  focus: "Aesthetic Focus", exercises: ["Push-ups 3×12–20","Decline Push-ups 3×8–15","Pike Push-ups 3×8–12","Lateral Raises 3×12–15","Chair Dips 3×10–15","Overhead Press (backpack) 3×10–12","Leg Raises 3×12–15","Bicycle Crunches 3×20","Plank 3×60s"] },
+  Tuesday:   { tag: "Pull + Back Width", focus: "V-Taper",         exercises: ["Pull-ups 3×8–12","Chin-ups 3×6–10","Backpack Rows 3×12–15","Face Pulls / Rear Delt Rows 3×12–15","Backpack Curls 3×12–15","Hanging Knee Raises 3×10–15","Side Plank 3×30s each"] },
+  Wednesday: { tag: "Legs + Core",       focus: "",                exercises: ["Squats 3×20","Bulgarian Split Squats 3×10 each","Lunges 3×12 each","Glute Bridges 3×15","Calf Raises 3×20","Wall Sit 2×60s","Russian Twists 3×20","Reverse Crunches 3×15","Ab Wheel / Dragon Flag Negatives 3×8–10"] },
   Thursday:  { tag: "Active Rest",       focus: "Mobility",        exercises: ["Walk or light jog 15–20 min","Full body stretching 10 min","Foam roll / massage 5 min"] },
-  Friday:    { tag: "Full Body",         focus: "Conditioning",    exercises: ["Push-ups 3×max","Pull-ups 3×max","Squats 3×20","Pike Push-ups 2×10","Burpees 3×10","Plank to Push-up 2×10","Plank 2×90s"] },
-  Saturday:  { tag: "Arms + Aesthetics", focus: "Pump",            exercises: ["Backpack Curls 4×12–15","Hammer Curls 3×12","Chair Dips 4×12–15","Diamond Push-ups 3×10–12","Lateral Raises 3×15","Wrist Curls / Forearm Work 3×15"] },
+  Friday:    { tag: "Full Body",         focus: "Conditioning",    exercises: ["Push-ups 3×15–20","Pull-ups 3×8–12","Squats 3×20","Pike Push-ups 2×10","Burpees 3×10","Plank to Push-up 2×10","Plank 2×90s"] },
+  Saturday:  { tag: "Arms + Aesthetics", focus: "Pump",            exercises: ["Backpack Curls 3×12–15","Hammer Curls 3×12","Chair Dips 3×12–15","Diamond Push-ups 3×10–12","Lateral Raises 3×15","Wrist Curls / Forearm Work 3×15"] },
 };
 
 // ── Daily stretching (same every day) ───────────────────────────
@@ -316,28 +295,10 @@ const LS_KEY = "aarav-checks-v1";
 function saveToLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(checks)); } catch(e) {} }
 function loadFromLocal() { try { const v = localStorage.getItem(LS_KEY); if (v) checks = JSON.parse(v); } catch(e) {} }
 
-// ── Firebase (background sync) ───────────────────────────────────
-async function syncFirestore() {
-  try {
-    const snap = await getDoc(DOC_REF);
-    if (snap.exists()) {
-      checks = Object.assign({}, checks, snap.data().checks || {});
-      saveToLocal();
-      renderAll();
-    }
-  } catch(e) { console.warn("Firestore sync failed:", e); }
-}
 function scheduleSave() {
-  setStatus("Saving…");
-  clearTimeout(saveTimer);
   saveToLocal();
-  saveTimer = setTimeout(async () => {
-    try {
-      await setDoc(DOC_REF, { checks });
-      setStatus("Saved ✓");
-      setTimeout(() => setStatus(""), 2000);
-    } catch(e) { setStatus("⚠ Offline — saved locally"); }
-  }, 800);
+  setStatus("Saved ✓");
+  setTimeout(() => setStatus(""), 1500);
 }
 function setStatus(msg) { document.getElementById("save-status").textContent = msg; }
 
@@ -416,4 +377,169 @@ function renderDayCard() {
   });
 }
 
-// ── Rend
+// ── Render stats ─────────────────────────────────────────────────
+function renderStats() {
+  const today = dateKey();
+  const dn = dayName(today);
+  const plan = PLAN[dn];
+  const dc = checks[today] || {};
+  const done = plan.exercises.filter((_,i) => dc['ex_'+i]).length;
+  const total = plan.exercises.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+
+  document.getElementById("stat-streak").textContent = computeStreak(checks);
+  document.getElementById("stat-pct").textContent = pct + "%";
+  document.getElementById("stat-done").textContent = `${done}/${total}`;
+}
+
+// ── Line chart ───────────────────────────────────────────────────
+function renderLineChart() {
+  const canvas = document.getElementById("chart");
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth || 220;
+  const H = 130;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.height = H + "px";
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  const PAD = { top: 10, right: 8, bottom: 26, left: 28 };
+  const cW = W - PAD.left - PAD.right;
+  const cH = H - PAD.top - PAD.bottom;
+  const dates = last14();
+  const data = dates.map(ds => pctForDate(ds, checks));
+  const n = dates.length;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // grid
+  [0, 25, 50, 75, 100].forEach(v => {
+    const cy = PAD.top + cH - (v/100)*cH;
+    ctx.beginPath(); ctx.strokeStyle="#262626"; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.moveTo(PAD.left, cy); ctx.lineTo(PAD.left+cW, cy); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle="#525252"; ctx.font="9px system-ui,sans-serif"; ctx.textAlign="right";
+    ctx.fillText(v, PAD.left-4, cy+3);
+  });
+
+  // x labels
+  dates.forEach((ds, i) => {
+    if (i % 2 !== 0) return;
+    const d = new Date(ds+"T00:00:00");
+    const x = PAD.left + (i/(n-1))*cW;
+    ctx.fillStyle="#525252"; ctx.font="9px system-ui,sans-serif"; ctx.textAlign="center";
+    ctx.fillText(`${d.getDate()}/${d.getMonth()+1}`, x, H-5);
+  });
+
+  // fill area
+  ctx.beginPath();
+  data.forEach((p,i) => {
+    const x = PAD.left+(i/(n-1))*cW, y = PAD.top+cH-(p/100)*cH;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.lineTo(PAD.left+cW, PAD.top+cH); ctx.lineTo(PAD.left, PAD.top+cH); ctx.closePath();
+  const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top+cH);
+  grad.addColorStop(0, "rgba(249,115,22,0.18)"); grad.addColorStop(1, "rgba(249,115,22,0)");
+  ctx.fillStyle = grad; ctx.fill();
+
+  // line
+  ctx.beginPath(); ctx.strokeStyle="#f97316"; ctx.lineWidth=2.5; ctx.lineJoin="round"; ctx.lineCap="round";
+  data.forEach((p,i) => {
+    const x = PAD.left+(i/(n-1))*cW, y = PAD.top+cH-(p/100)*cH;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }); ctx.stroke();
+
+  // dots
+  data.forEach((p,i) => {
+    const x = PAD.left+(i/(n-1))*cW, y = PAD.top+cH-(p/100)*cH;
+    ctx.beginPath(); ctx.arc(x,y,3.5,0,Math.PI*2); ctx.fillStyle="#f97316"; ctx.fill();
+    if (p > 0) { ctx.beginPath(); ctx.arc(x,y,1.5,0,Math.PI*2); ctx.fillStyle="#0a0a0a"; ctx.fill(); }
+  });
+}
+
+// ── Pie chart ────────────────────────────────────────────────────
+function renderPieChart() {
+  const canvas = document.getElementById("pie");
+  const dpr = window.devicePixelRatio || 1;
+  const SIZE = 110;
+  canvas.width = SIZE * dpr; canvas.height = SIZE * dpr;
+  canvas.style.width = SIZE + "px"; canvas.style.height = SIZE + "px";
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  const today = dateKey();
+  const dn = dayName(today);
+  const plan = PLAN[dn];
+  const dc = checks[today] || {};
+
+  const exDone = plan.exercises.filter((_,i) => dc['ex_'+i]).length;
+  const exTotal = plan.exercises.length;
+  const stDone = STRETCHES.filter((_,i) => dc['st_'+i]).length;
+  const stTotal = STRETCHES.length;
+  const exLeft = exTotal - exDone;
+  const stLeft = stTotal - stDone;
+  const total = exTotal + stTotal;
+
+  const segments = [
+    { value: exDone,  color: "#f97316", label: "Ex done" },
+    { value: exLeft,  color: "#2a1600", label: "Ex left" },
+    { value: stDone,  color: "#38bdf8", label: "St done" },
+    { value: stLeft,  color: "#0c2230", label: "St left" },
+  ].filter(s => s.value > 0);
+
+  const cx = SIZE/2, cy = SIZE/2, r = SIZE/2 - 8, innerR = r * 0.55;
+  let angle = -Math.PI/2;
+
+  ctx.clearRect(0, 0, SIZE, SIZE);
+
+  segments.forEach(seg => {
+    const slice = (seg.value / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angle, angle + slice);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    angle += slice;
+  });
+
+  // donut hole
+  ctx.beginPath(); ctx.arc(cx, cy, innerR, 0, Math.PI*2);
+  ctx.fillStyle = "#171717"; ctx.fill();
+
+  // center text
+  const totalDone = exDone + stDone;
+  const pct = Math.round((totalDone / total) * 100);
+  ctx.fillStyle = "#f5f5f5"; ctx.font = `800 ${SIZE*0.16}px system-ui,sans-serif`;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(pct + "%", cx, cy - 5);
+  ctx.fillStyle = "#525252"; ctx.font = `500 ${SIZE*0.09}px system-ui,sans-serif`;
+  ctx.fillText("overall", cx, cy + SIZE*0.12);
+
+  // legend
+  const legend = document.getElementById("pie-legend");
+  legend.innerHTML = `
+    <div class="pie-legend-item"><span class="pie-dot" style="background:#f97316"></span>${exDone}/${exTotal} Ex</div>
+    <div class="pie-legend-item"><span class="pie-dot" style="background:#38bdf8"></span>${stDone}/${stTotal} Stretch</div>
+  `;
+}
+
+// ── Render all ───────────────────────────────────────────────────
+function renderAll() {
+  renderStats();
+  renderDayRow();
+  renderDayCard();
+  renderLineChart();
+  renderPieChart();
+}
+
+// ── Boot ─────────────────────────────────────────────────────────
+// 1. Load from localStorage instantly (zero network wait)
+loadFromLocal();
+renderAll();
+setStatus("");
+
+
+window.addEventListener("resize", () => { renderLineChart(); renderPieChart(); });
+</script>
+</body>
+</html>
