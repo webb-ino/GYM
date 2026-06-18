@@ -4,6 +4,8 @@
 <link rel="icon" type="svg/png" href="calisthenics-icon-geometric.svg">
 
 <link rel="apple-touch-icon" href="calisthenics-icon-geometric.svg">
+ <link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#ff4500">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>Aarav's Training Log</title>
@@ -166,7 +168,15 @@
 </head>
 <body>
 
-
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('Service Worker Registered'))
+      .catch(err => console.log(err));
+  });
+}
+</script>
 <div class="app">
   <div class="header">
     <div class="header-eyebrow">
