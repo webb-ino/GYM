@@ -167,6 +167,23 @@
 </style>
 </head>
 <body>
+ <div id="authBox" style="padding:20px">
+
+<h2>Login / Register</h2>
+
+<input id="email" placeholder="Email">
+<br><br>
+
+<input id="password" type="password" placeholder="Password">
+<br><br>
+
+<button onclick="register()">Register</button>
+
+<button onclick="login()">Login</button>
+
+<button onclick="logout()">Logout</button>
+
+</div>
 
 <script>
 if ('serviceWorker' in navigator) {
@@ -308,12 +325,41 @@ const LS_KEY = "aarav-checks-v1";
 function saveToLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(checks)); } catch(e) {} }
 function loadFromLocal() { try { const v = localStorage.getItem(LS_KEY); if (v) checks = JSON.parse(v); } catch(e) {} }
 
-function scheduleSave() {
-  saveToLocal();
-  setStatus("Saved ✓");
-  setTimeout(() => setStatus(""), 1500);
+async function scheduleSave() {
+
+saveToLocal();
+
+if(auth.currentUser){
+
+await setDoc(
+doc(db,"workouts",auth.currentUser.uid),
+{
+checks: checks
+}
+);
+
+}
+
+setStatus("Saved ✓");
 }
 function setStatus(msg) { document.getElementById("save-status").textContent = msg; }
+ async function loadUserData() {
+
+if(!auth.currentUser) return;
+
+const snap = await getDoc(
+doc(db,"workouts",auth.currentUser.uid)
+);
+
+if(snap.exists()){
+
+checks = snap.data().checks || {};
+
+renderAll();
+
+}
+
+}
 
 // ── Toggle stretch ───────────────────────────────────────────────
 function toggleStretch() {
@@ -554,5 +600,91 @@ setStatus("");
 
 window.addEventListener("resize", () => { renderLineChart(); renderPieChart(); });
 </script>
+ <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCceSXIDTspwtzdkY0DIesmg0JEXzNtJpg",
+  authDomain: "gymm-40b01.firebaseapp.com",
+  projectId: "gymm-40b01",
+  storageBucket: "gymm-40b01.firebasestorage.app",
+  messagingSenderId: "163741077307",
+  appId: "1:163741077307:web:0ad182605f43802673f11e",
+  measurementId: "G-PQRXY230K3"
+};
+
+const app = initializeApp(firebaseConfig);
+
+window.auth = getAuth(app);
+window.db = getFirestore(app);
+
+window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+window.signOut = signOut;
+window.doc = doc;
+window.setDoc = setDoc;
+window.getDoc = getDoc;
+window.onAuthStateChanged = onAuthStateChanged;
+
+  async function register() {
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+alert("Registered Successfully");
+}
+
+async function login() {
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+alert("Login Success");
+
+loadUserData();
+}
+
+async function logout() {
+
+await signOut(auth);
+
+alert("Logged Out");
+}
+</script>
+ 
 </body>
 </html>
