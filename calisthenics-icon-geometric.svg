@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0B0B14"/>
+      <stop offset="100%" style="stop-color:#12121E"/>
+    </linearGradient>
+
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F8EF7"/>
+      <stop offset="100%" style="stop-color:#9B6FE8"/>
+    </linearGradient>
+
+    <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9B6FE8"/>
+      <stop offset="100%" style="stop-color:#E86FA8"/>
+    </linearGradient>
+
+    <linearGradient id="g3" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4F8EF7"/>
+      <stop offset="100%" style="stop-color:#60D4C8"/>
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <filter id="bigglow">
+      <feGaussianBlur stdDeviation="22" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="220" fill="url(#bg)"/>
+
+  <!-- Outer subtle ring -->
+  <circle cx="512" cy="512" r="420" fill="none" stroke="#1A1A2E" stroke-width="2"/>
+
+  <!-- ── Three interlocking chevrons / upward arrows — represent progression ── -->
+
+  <!-- Bottom chevron (dimmest, furthest back) -->
+  <polyline
+    points="292,640 512,380 732,640"
+    fill="none"
+    stroke="#1E2A4A"
+    stroke-width="52"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Middle chevron -->
+  <polyline
+    points="332,600 512,340 692,600"
+    fill="none"
+    stroke="url(#g3)"
+    stroke-width="44"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.45"
+    filter="url(#glow)"
+  />
+
+  <!-- Top chevron (brightest, most prominent) -->
+  <polyline
+    points="372,560 512,300 652,560"
+    fill="none"
+    stroke="url(#g1)"
+    stroke-width="44"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    filter="url(#glow)"
+  />
+
+  <!-- Peak dot — the apex, glowing -->
+  <circle cx="512" cy="296" r="28" fill="#A08AF8" filter="url(#bigglow)"/>
+  <circle cx="512" cy="296" r="14" fill="#FFFFFF"/>
+
+  <!-- Bottom horizontal bar — the ground / baseline -->
+  <rect x="292" y="688" width="440" height="20" rx="10" fill="#1E2A3A"/>
+  <!-- Filled portion of bar (progress indicator) -->
+  <rect x="292" y="688" width="280" height="20" rx="10" fill="url(#g1)" filter="url(#glow)" opacity="0.8"/>
+  <!-- Bar end dot -->
+  <circle cx="572" cy="698" r="16" fill="#7AA8F8" filter="url(#glow)"/>
+
+  <!-- Subtle grid dots in background for depth -->
+  <g opacity="0.06" fill="#6888CC">
+    <circle cx="200" cy="200" r="5"/><circle cx="280" cy="200" r="5"/><circle cx="360" cy="200" r="5"/>
+    <circle cx="440" cy="200" r="5"/><circle cx="520" cy="200" r="5"/><circle cx="600" cy="200" r="5"/>
+    <circle cx="680" cy="200" r="5"/><circle cx="760" cy="200" r="5"/><circle cx="840" cy="200" r="5"/>
+    <circle cx="200" cy="280" r="5"/><circle cx="840" cy="280" r="5"/>
+    <circle cx="200" cy="360" r="5"/><circle cx="840" cy="360" r="5"/>
+    <circle cx="200" cy="440" r="5"/><circle cx="840" cy="440" r="5"/>
+    <circle cx="200" cy="820" r="5"/><circle cx="280" cy="820" r="5"/><circle cx="360" cy="820" r="5"/>
+    <circle cx="440" cy="820" r="5"/><circle cx="520" cy="820" r="5"/><circle cx="600" cy="820" r="5"/>
+    <circle cx="680" cy="820" r="5"/><circle cx="760" cy="820" r="5"/><circle cx="840" cy="820" r="5"/>
+  </g>
+</svg>
