@@ -245,19 +245,19 @@ class="auth-input">
 <div class="auth-buttons">
 
 <button
-onclick="registerUser()"
+async function register()
 class="auth-btn auth-btn-secondary">
 Register
 </button>
 
 <button
-onclick="loginUser()"
+async function login()
 class="auth-btn auth-btn-primary">
 Login
 </button>
 
 <button
-onclick="logoutUser()"
+async function logout()
 class="auth-btn auth-btn-danger">
 Logout
 </button>
@@ -410,7 +410,7 @@ async function scheduleSave() {
 
 saveToLocal();
 
-if(auth.currentUser){
+if(window.auth && auth.currentUser){
 
 await setDoc(
 doc(db,"workouts",auth.currentUser.uid),
@@ -723,7 +723,9 @@ window.setDoc = setDoc;
 window.getDoc = getDoc;
 window.onAuthStateChanged = onAuthStateChanged;
 
-  async function register() {
+window.registerUser = async () => {
+
+try {
 
 const email =
 document.getElementById("email").value;
@@ -738,9 +740,18 @@ password
 );
 
 alert("Registered Successfully");
+
+} catch(err){
+
+alert(err.message);
+
 }
 
-async function login() {
+};
+
+window.loginUser = async () => {
+
+try {
 
 const email =
 document.getElementById("email").value;
@@ -754,17 +765,53 @@ email,
 password
 );
 
-alert("Login Success");
+alert("Login Successful");
+
+document.getElementById("authBox").style.display = "none";
 
 loadUserData();
+
+} catch(err){
+
+alert(err.message);
+
 }
 
-async function logout() {
+};
+
+window.logoutUser = async () => {
+
+try {
 
 await signOut(auth);
 
+document.getElementById("authBox").style.display = "block";
+
 alert("Logged Out");
+
+} catch(err){
+
+alert(err.message);
+
 }
+
+};
+onAuthStateChanged(auth, async (user) => {
+
+if(user){
+
+document.getElementById("authBox").style.display = "none";
+
+await loadUserData();
+
+}else{
+
+document.getElementById("authBox").style.display = "block";
+
+}
+
+});
+
 </script>
  
 </body>
