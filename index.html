@@ -11,6 +11,65 @@
 <title>Aarav's Training Log</title>
 
 <style>
+ .auth-card{
+  background: var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:20px;
+}
+
+.auth-title{
+  color:var(--orange);
+  font-size:20px;
+  font-weight:800;
+  margin-bottom:15px;
+}
+
+.auth-input{
+  width:100%;
+  background:#0f0f0f;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+  font-size:14px;
+}
+
+.auth-input:focus{
+  outline:none;
+  border-color:var(--orange);
+}
+
+.auth-buttons{
+  display:flex;
+  gap:8px;
+}
+
+.auth-btn{
+  flex:1;
+  border:none;
+  border-radius:12px;
+  padding:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.auth-btn-primary{
+  background:var(--orange);
+  color:black;
+}
+
+.auth-btn-secondary{
+  background:#262626;
+  color:white;
+}
+
+.auth-btn-danger{
+  background:#7f1d1d;
+  color:white;
+}
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -167,21 +226,43 @@
 </style>
 </head>
 <body>
- <div id="authBox" style="padding:20px">
+ <div id="authBox" class="auth-card">
 
-<h2>Login / Register</h2>
+<h2 class="auth-title">🔐 Account</h2>
 
-<input id="email" placeholder="Email">
-<br><br>
+<input
+id="email"
+type="email"
+placeholder="Email Address"
+class="auth-input">
 
-<input id="password" type="password" placeholder="Password">
-<br><br>
+<input
+id="password"
+type="password"
+placeholder="Password"
+class="auth-input">
 
-<button onclick="register()">Register</button>
+<div class="auth-buttons">
 
-<button onclick="login()">Login</button>
+<button
+onclick="registerUser()"
+class="auth-btn auth-btn-secondary">
+Register
+</button>
 
-<button onclick="logout()">Logout</button>
+<button
+onclick="loginUser()"
+class="auth-btn auth-btn-primary">
+Login
+</button>
+
+<button
+onclick="logoutUser()"
+class="auth-btn auth-btn-danger">
+Logout
+</button>
+
+</div>
 
 </div>
 
