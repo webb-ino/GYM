@@ -4,50 +4,47 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
 <title>Calisthenics Level 2</title>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
 :root{
-  --bg:#070709;--card:#0f0f12;--card2:#0a0a0d;--border:#1c1c22;--border2:#141418;
-  --text:#e8e8f0;--muted:#3a3a48;--muted2:#252530;
-  --mon:#f97316;--tue:#a855f7;--wed:#22c55e;--thu:#ef4444;
-  --fri:#06b6d4;--sat:#f59e0b;--sun:#818cf8;
+--bg:#070709;--card:#0f0f12;--card2:#0a0a0d;--border:#1c1c22;--border2:#141418;
+--text:#e8e8f0;--muted:#3a3a48;--muted2:#252530;
+--mon:#f97316;--tue:#a855f7;--wed:#22c55e;--thu:#ef4444;
+--fri:#06b6d4;--sat:#f59e0b;--sun:#818cf8;
 }
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;min-height:100vh;}
 button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 a{color:inherit;text-decoration:none;}
-
 /* ── HEADER ── */
 .hdr{padding:20px 18px 16px;background:linear-gradient(160deg,#0c0c10 0%,#1a0800 100%);border-bottom:1px solid var(--border);}
 .hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
 .hdr h1{font-size:18px;font-weight:800;letter-spacing:-0.4px;color:#fff;}
 .hdr-sub{font-size:11px;color:var(--muted);margin-bottom:12px;}
+#syncStatus{font-size:10px;transition:color .3s ease,opacity .3s ease;}
 .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .kpi{background:#111115;border:1px solid var(--border);border-radius:12px;padding:10px 8px;text-align:center;}
 .kpi-val{font-size:20px;font-weight:800;color:#f97316;line-height:1;}
 .kpi-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:3px;}
-
 /* ── NAV ── */
 .nav{display:flex;padding:8px 14px;background:#0b0b0e;border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:100;gap:4px;overflow-x:auto;}
 .nav::-webkit-scrollbar{display:none;}
 .nav button{flex-shrink:0;padding:7px 12px;border-radius:20px;background:transparent;color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap;transition:all 0.15s;}
 .nav button.active{background:#1a1a20;color:#fff;}
-
 /* ── PAGES ── */
 .page{display:none;padding-bottom:80px;}
 .page.active{display:block;}
-
 /* ── DAY TABS ── */
 .daytabs{display:flex;gap:7px;padding:12px 16px;overflow-x:auto;border-bottom:1px solid var(--border2);}
 .daytabs::-webkit-scrollbar{display:none;}
 .dtab{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid #222;background:var(--card);color:#444;font-size:12px;font-weight:600;transition:all 0.15s;}
 .dtab.active{font-weight:800;}
-
 /* ── PROGRESS BAR ── */
 .pbar-wrap{padding:10px 16px 6px;}
 .pbar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
 .pbar{height:3px;background:var(--border);border-radius:4px;overflow:hidden;}
 .pbar-fill{height:100%;border-radius:4px;transition:width 0.45s ease;}
-
 /* ── EX CARDS ── */
 .exlist{padding:10px 16px 20px;display:flex;flex-direction:column;gap:10px;}
 .excard{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:background 0.2s,border-color 0.2s;}
@@ -64,7 +61,6 @@ a{color:inherit;text-decoration:none;}
 .pill-val.sm{font-size:12px;line-height:1.3;}
 .arow{display:flex;gap:7px;}
 .abtn{flex:1;padding:8px 6px;border-radius:8px;background:var(--card2);border:1px solid var(--border2);color:var(--muted);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;transition:all 0.15s;}
-
 /* ── DROPDOWNS ── */
 .ddrop{display:none;border-top:1px solid #ffffff0a;}
 .ddrop.show{display:block;}
@@ -85,7 +81,6 @@ a{color:inherit;text-decoration:none;}
 .ainame{font-size:12px;font-weight:700;color:#ddd;}
 .aitag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;}
 .ainote{font-size:10px;color:var(--muted);line-height:1.5;margin:0;}
-
 /* ── CIRCLE CHARTS (PROGRESS PAGE) ── */
 .prog-page{padding:16px 16px 40px;}
 .circle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
@@ -108,7 +103,6 @@ a{color:inherit;text-decoration:none;}
 .tc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
 .tc-ex{font-size:11px;color:#555;}
 .tc-val{font-size:11px;font-weight:700;color:#333;}
-
 /* ── TIMER PAGE ── */
 .timer-page{padding:16px 16px 40px;}
 .timer-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
@@ -132,7 +126,6 @@ a{color:inherit;text-decoration:none;}
 .ref-row:last-child{border-bottom:none;}
 .ref-time{font-size:13px;font-weight:800;min-width:36px;}
 .ref-use{font-size:11px;color:var(--muted);}
-
 /* ── STRETCH PAGE ── */
 .stretch-page{padding:16px 16px 40px;}
 .s-intro{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.6;}
@@ -153,7 +146,6 @@ a{color:inherit;text-decoration:none;}
 .info-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 14px;}
 .info-title{font-size:10px;font-weight:700;color:#a855f7;margin-bottom:6px;}
 .info-text{font-size:11px;color:var(--muted);line-height:1.7;}
-
 /* ── DIET PAGE ── */
 .diet-page{padding:16px 16px 40px;}
 .diet-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 15px;margin-bottom:12px;}
@@ -178,147 +170,139 @@ a{color:inherit;text-decoration:none;}
 </style>
 </head>
 <body>
-
 <!-- HEADER -->
 <div class="hdr">
-  <div class="hdr-top"><span style="font-size:22px;">⚡</span><h1>Calisthenics Level 2</h1></div>
-  <p class="hdr-sub">6-day program · Home · Pull-up bar</p>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" id="kpiStreak">0</div><div class="kpi-label">Streak</div></div>
-    <div class="kpi"><div class="kpi-val" id="kpiWeek" style="color:#22c55e;">0/6</div><div class="kpi-label">This Week</div></div>
-    <div class="kpi"><div class="kpi-val" id="kpiToday" style="color:#a855f7;">0%</div><div class="kpi-label">Today</div></div>
-  </div>
+<div class="hdr-top"><span style="font-size:22px;">⚡</span><h1>Calisthenics Level 2</h1></div>
+<p class="hdr-sub">6-day program · Home · Pull-up bar &nbsp;<span id="syncStatus" style="color:#3a3a48;">·  loading…</span></p>
+<div class="kpi-row">
+<div class="kpi"><div class="kpi-val" id="kpiStreak">0</div><div class="kpi-label">Streak</div></div>
+<div class="kpi"><div class="kpi-val" id="kpiWeek" style="color:#22c55e;">0/6</div><div class="kpi-label">This Week</div></div>
+<div class="kpi"><div class="kpi-val" id="kpiToday" style="color:#a855f7;">0%</div><div class="kpi-label">Today</div></div>
 </div>
-
+</div>
 <!-- NAV -->
 <div class="nav" id="nav">
-  <button class="active" data-tab="workout">💪 Workout</button>
-  <button data-tab="progress">📊 Progress</button>
-  <button data-tab="timer">⏱️ Timer</button>
-  <button data-tab="stretch">🧘 Stretch</button>
-  <button data-tab="diet">🥗 Diet</button>
+<button class="active" data-tab="workout">💪 Workout</button>
+<button data-tab="progress">📊 Progress</button>
+<button data-tab="timer">⏱️ Timer</button>
+<button data-tab="stretch">🧘 Stretch</button>
+<button data-tab="diet">🥗 Diet</button>
 </div>
-
 <!-- WORKOUT PAGE -->
 <div class="page active" id="page-workout">
-  <div class="daytabs" id="daytabs"></div>
-  <div class="pbar-wrap">
-    <div class="pbar-top"><span>Today</span><span id="doneLabel" style="font-weight:700;"></span></div>
-    <div class="pbar"><div class="pbar-fill" id="pbarFill"></div></div>
-  </div>
-  <div class="exlist" id="exlist"></div>
+<div class="daytabs" id="daytabs"></div>
+<div class="pbar-wrap">
+<div class="pbar-top"><span>Today</span><span id="doneLabel" style="font-weight:700;"></span></div>
+<div class="pbar"><div class="pbar-fill" id="pbarFill"></div></div>
 </div>
-
+<div class="exlist" id="exlist"></div>
+</div>
 <!-- PROGRESS PAGE -->
 <div class="page" id="page-progress">
-  <div class="prog-page">
-    <div class="sec-title">Weekly Completion</div>
-    <div class="week-rings" id="weekRings"></div>
-    <div class="sec-title">Volume by Category</div>
-    <div class="circle-grid" id="circleGrid"></div>
-    <div class="sec-title">Current Targets</div>
-    <div id="daySummaries"></div>
-  </div>
+<div class="prog-page">
+<div class="sec-title">Weekly Completion</div>
+<div class="week-rings" id="weekRings"></div>
+<div class="sec-title">Volume by Category</div>
+<div class="circle-grid" id="circleGrid"></div>
+<div class="sec-title">Current Targets</div>
+<div id="daySummaries"></div>
 </div>
-
+</div>
 <!-- TIMER PAGE -->
 <div class="page" id="page-timer">
-  <div class="timer-page">
-    <div class="timer-card">
-      <div class="timer-lbl">⏱️ Tap a preset to start</div>
-      <div class="preset-grid" id="presetGrid"></div>
-      <div class="timer-body">
-        <div class="ring-wrap">
-          <svg width="92" height="92" style="transform:rotate(-90deg);">
-            <circle cx="46" cy="46" r="38" fill="none" stroke="#1a1a20" stroke-width="6"/>
-            <circle id="timerRing" cx="46" cy="46" r="38" fill="none" stroke="#f97316"
-              stroke-width="6" stroke-dasharray="238.76" stroke-dashoffset="238.76"
-              stroke-linecap="round" style="transition:stroke-dashoffset 0.85s linear;"/>
-          </svg>
-          <div class="ring-label">
-            <span class="ring-time" id="ringTime">—</span>
-            <span class="ring-unit" id="ringUnit"></span>
-          </div>
-        </div>
-        <div class="timer-ctrls">
-          <button class="t-pause" id="tPause" disabled>▶ &nbsp;Start</button>
-          <button class="t-reset" id="tReset" disabled>↺ &nbsp;Reset</button>
-        </div>
-      </div>
-      <div class="done-banner" id="doneBanner">🎉 Time's up! Start your next set.</div>
-    </div>
-    <div class="ref-card">
-      <div class="ref-title">When to use each timer</div>
-      <div class="ref-row"><span class="ref-time" style="color:#f97316;">20s</span><span class="ref-use">Push-Up Hold, L-Sit Hold, Handstand Hold</span></div>
-      <div class="ref-row"><span class="ref-time" style="color:#f97316;">30s</span><span class="ref-use">Dead Hang, Wall Sit, Hollow Body, Isometric Hold</span></div>
-      <div class="ref-row"><span class="ref-time" style="color:#f97316;">45s</span><span class="ref-use">Wall Sit (extended), rest between core sets</span></div>
-      <div class="ref-row"><span class="ref-time" style="color:#f97316;">60s</span><span class="ref-use">Rest between push/pull sets</span></div>
-      <div class="ref-row"><span class="ref-time" style="color:#f97316;">90s</span><span class="ref-use">Rest after heavy sets — pull-ups, split squats</span></div>
-      <div class="ref-row"><span class="ref-time" style="color:#f97316;">120s</span><span class="ref-use">Rest after explosive/skill work</span></div>
-    </div>
-  </div>
+<div class="timer-page">
+<div class="timer-card">
+<div class="timer-lbl">⏱️ Tap a preset to start</div>
+<div class="preset-grid" id="presetGrid"></div>
+<div class="timer-body">
+<div class="ring-wrap">
+<svg width="92" height="92" style="transform:rotate(-90deg);">
+<circle cx="46" cy="46" r="38" fill="none" stroke="#1a1a20" stroke-width="6"/>
+<circle id="timerRing" cx="46" cy="46" r="38" fill="none" stroke="#f97316"
+stroke-width="6" stroke-dasharray="238.76" stroke-dashoffset="238.76"
+stroke-linecap="round" style="transition:stroke-dashoffset 0.85s linear;"/>
+</svg>
+<div class="ring-label">
+<span class="ring-time" id="ringTime">—</span>
+<span class="ring-unit" id="ringUnit"></span>
 </div>
-
+</div>
+<div class="timer-ctrls">
+<button class="t-pause" id="tPause" disabled>▶ &nbsp;Start</button>
+<button class="t-reset" id="tReset" disabled>↺ &nbsp;Reset</button>
+</div>
+</div>
+<div class="done-banner" id="doneBanner">🎉 Time's up! Start your next set.</div>
+</div>
+<div class="ref-card">
+<div class="ref-title">When to use each timer</div>
+<div class="ref-row"><span class="ref-time" style="color:#f97316;">20s</span><span class="ref-use">Push-Up Hold, L-Sit Hold, Handstand Hold</span></div>
+<div class="ref-row"><span class="ref-time" style="color:#f97316;">30s</span><span class="ref-use">Dead Hang, Wall Sit, Hollow Body, Isometric Hold</span></div>
+<div class="ref-row"><span class="ref-time" style="color:#f97316;">45s</span><span class="ref-use">Wall Sit (extended), rest between core sets</span></div>
+<div class="ref-row"><span class="ref-time" style="color:#f97316;">60s</span><span class="ref-use">Rest between push/pull sets</span></div>
+<div class="ref-row"><span class="ref-time" style="color:#f97316;">90s</span><span class="ref-use">Rest after heavy sets — pull-ups, split squats</span></div>
+<div class="ref-row"><span class="ref-time" style="color:#f97316;">120s</span><span class="ref-use">Rest after explosive/skill work</span></div>
+</div>
+</div>
+</div>
 <!-- STRETCH PAGE -->
 <div class="page" id="page-stretch">
-  <div class="stretch-page">
-    <p class="s-intro">Do this on Sunday and before/after every session. Tap each to check off.</p>
-    <div class="collapsible">
-      <button class="coll-head" id="stretchToggle">
-        <div class="ch-left"><span style="font-size:16px;">🧘</span><span class="ch-title">Daily Stretching</span><span class="ch-badge" id="sBadge"></span></div>
-        <span style="font-size:11px;color:var(--muted);" id="sChev">▼</span>
-      </button>
-      <div class="coll-body" id="stretchBody">
-        <div id="stretchList"></div>
-      </div>
-    </div>
-    <div class="info-box">
-      <div class="info-title">💡 Sunday protocol</div>
-      <p class="info-text">Full rest day — do all 7 stretches, take a light 20-min walk, and focus on sleep. Recovery is where the gains actually happen. Aim for 8 hours.</p>
-    </div>
-  </div>
+<div class="stretch-page">
+<p class="s-intro">Do this on Sunday and before/after every session. Tap each to check off.</p>
+<div class="collapsible">
+<button class="coll-head" id="stretchToggle">
+<div class="ch-left"><span style="font-size:16px;">🧘</span><span class="ch-title">Daily Stretching</span><span class="ch-badge" id="sBadge"></span></div>
+<span style="font-size:11px;color:var(--muted);" id="sChev">▼</span>
+</button>
+<div class="coll-body" id="stretchBody">
+<div id="stretchList"></div>
 </div>
-
+</div>
+<div class="info-box">
+<div class="info-title">💡 Sunday protocol</div>
+<p class="info-text">Full rest day — do all 7 stretches, take a light 20-min walk, and focus on sleep. Recovery is where the gains actually happen. Aim for 8 hours.</p>
+</div>
+</div>
+</div>
 <!-- DIET PAGE -->
 <div class="page" id="page-diet">
-  <div class="diet-page">
-    <div class="diet-card">
-      <div class="dc-head"><span class="dc-emoji">🌅</span><div><div class="dc-title">Breakfast</div><div class="dc-sub">Fuel for the day</div></div></div>
-      <div class="meal-row"><div class="meal-dot" style="background:#f97316;"></div><div><div class="meal-name">Power Bowl</div><div class="meal-detail">Oats + milk + 2 bananas + peanut butter + almonds</div></div></div>
-    </div>
-    <div class="diet-card">
-      <div class="dc-head"><span class="dc-emoji">☀️</span><div><div class="dc-title">Lunch</div><div class="dc-sub">Main protein meal</div></div></div>
-      <div class="meal-row"><div class="meal-dot" style="background:#a855f7;"></div><div><div class="meal-name">Muscle Plate</div><div class="meal-detail">Rice + dal + paneer or soy chunks + vegetables + curd</div></div></div>
-    </div>
-    <div class="diet-card">
-      <div class="dc-head"><span class="dc-emoji">🌤️</span><div><div class="dc-title">Snack</div><div class="dc-sub">Mid-day energy</div></div></div>
-      <div class="meal-row"><div class="meal-dot" style="background:#22c55e;"></div><div><div class="meal-name">Recovery Snack</div><div class="meal-detail">Roasted chana + seasonal fruit + glass of milk</div></div></div>
-    </div>
-    <div class="diet-card">
-      <div class="dc-head"><span class="dc-emoji">🌙</span><div><div class="dc-title">Dinner</div><div class="dc-sub">Repair overnight</div></div></div>
-      <div class="meal-row"><div class="meal-dot" style="background:#06b6d4;"></div><div><div class="meal-name">Night Meal</div><div class="meal-detail">Chapati + dal + paneer or soy chunks + vegetables</div></div></div>
-    </div>
-    <div class="diet-card">
-      <div class="dc-head"><span class="dc-emoji">🌛</span><div><div class="dc-title">Before Bed</div><div class="dc-sub">Casein boost</div></div></div>
-      <div class="meal-row"><div class="meal-dot" style="background:#f59e0b;"></div><div><div class="meal-name">Slow Protein</div><div class="meal-detail">Glass of warm milk — slow-digesting protein overnight</div></div></div>
-    </div>
-    <div class="water-card">
-      <span class="water-emoji">💧</span>
-      <div><div class="water-val">3–4L</div><div class="water-label">water every day</div></div>
-    </div>
-    <div style="height:12px;"></div>
-    <div class="diet-card">
-      <div class="dc-head"><span class="dc-emoji">📊</span><div><div class="dc-title">Macro Guide</div><div class="dc-sub">Vegetarian muscle gain</div></div></div>
-      <div class="macro-grid">
-        <div class="macro-card"><div class="macro-letter" style="color:#f97316;">P</div><div class="macro-label">Protein</div><div class="macro-detail">1.6–2g per kg bodyweight — paneer, dal, soy, milk</div></div>
-        <div class="macro-card"><div class="macro-letter" style="color:#22c55e;">C</div><div class="macro-label">Carbs</div><div class="macro-detail">Rice, oats, banana around training for energy</div></div>
-        <div class="macro-card"><div class="macro-letter" style="color:#f59e0b;">F</div><div class="macro-label">Fats</div><div class="macro-detail">Almonds, peanut butter, ghee — don't skip</div></div>
-        <div class="macro-card"><div class="macro-letter" style="color:#38bdf8;">H</div><div class="macro-label">Hydration</div><div class="macro-detail">3–4L water daily, more on training days</div></div>
-      </div>
-    </div>
-  </div>
+<div class="diet-page">
+<div class="diet-card">
+<div class="dc-head"><span class="dc-emoji">🌅</span><div><div class="dc-title">Breakfast</div><div class="dc-sub">Fuel for the day</div></div></div>
+<div class="meal-row"><div class="meal-dot" style="background:#f97316;"></div><div><div class="meal-name">Power Bowl</div><div class="meal-detail">Oats + milk + 2 bananas + peanut butter + almonds</div></div></div>
 </div>
-
+<div class="diet-card">
+<div class="dc-head"><span class="dc-emoji">☀️</span><div><div class="dc-title">Lunch</div><div class="dc-sub">Main protein meal</div></div></div>
+<div class="meal-row"><div class="meal-dot" style="background:#a855f7;"></div><div><div class="meal-name">Muscle Plate</div><div class="meal-detail">Rice + dal + paneer or soy chunks + vegetables + curd</div></div></div>
+</div>
+<div class="diet-card">
+<div class="dc-head"><span class="dc-emoji">🌤️</span><div><div class="dc-title">Snack</div><div class="dc-sub">Mid-day energy</div></div></div>
+<div class="meal-row"><div class="meal-dot" style="background:#22c55e;"></div><div><div class="meal-name">Recovery Snack</div><div class="meal-detail">Roasted chana + seasonal fruit + glass of milk</div></div></div>
+</div>
+<div class="diet-card">
+<div class="dc-head"><span class="dc-emoji">🌙</span><div><div class="dc-title">Dinner</div><div class="dc-sub">Repair overnight</div></div></div>
+<div class="meal-row"><div class="meal-dot" style="background:#06b6d4;"></div><div><div class="meal-name">Night Meal</div><div class="meal-detail">Chapati + dal + paneer or soy chunks + vegetables</div></div></div>
+</div>
+<div class="diet-card">
+<div class="dc-head"><span class="dc-emoji">🌛</span><div><div class="dc-title">Before Bed</div><div class="dc-sub">Casein boost</div></div></div>
+<div class="meal-row"><div class="meal-dot" style="background:#f59e0b;"></div><div><div class="meal-name">Slow Protein</div><div class="meal-detail">Glass of warm milk — slow-digesting protein overnight</div></div></div>
+</div>
+<div class="water-card">
+<span class="water-emoji">💧</span>
+<div><div class="water-val">3–4L</div><div class="water-label">water every day</div></div>
+</div>
+<div style="height:12px;"></div>
+<div class="diet-card">
+<div class="dc-head"><span class="dc-emoji">📊</span><div><div class="dc-title">Macro Guide</div><div class="dc-sub">Vegetarian muscle gain</div></div></div>
+<div class="macro-grid">
+<div class="macro-card"><div class="macro-letter" style="color:#f97316;">P</div><div class="macro-label">Protein</div><div class="macro-detail">1.6–2g per kg bodyweight — paneer, dal, soy, milk</div></div>
+<div class="macro-card"><div class="macro-letter" style="color:#22c55e;">C</div><div class="macro-label">Carbs</div><div class="macro-detail">Rice, oats, banana around training for energy</div></div>
+<div class="macro-card"><div class="macro-letter" style="color:#f59e0b;">F</div><div class="macro-label">Fats</div><div class="macro-detail">Almonds, peanut butter, ghee — don't skip</div></div>
+<div class="macro-card"><div class="macro-letter" style="color:#38bdf8;">H</div><div class="macro-label">Hydration</div><div class="macro-detail">3–4L water daily, more on training days</div></div>
+</div>
+</div>
+</div>
+</div>
 <script>
 // ══════════════════════════════════════════════
 // DATA
@@ -326,215 +310,211 @@ a{color:inherit;text-decoration:none;}
 const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const DAY_COLORS={Monday:"#f97316",Tuesday:"#a855f7",Wednesday:"#22c55e",Thursday:"#ef4444",Friday:"#06b6d4",Saturday:"#f59e0b"};
 const DAY_LABELS={Monday:"Push",Tuesday:"Pull",Wednesday:"Legs",Thursday:"Core",Friday:"Arms",Saturday:"Explosive"};
-
 const WORKOUT={
-  Monday:{exercises:[
-    {id:"archer",name:"Archer Push-Ups",sets:4,reps:8,rest:"60s",muscle:"Chest, Triceps",advanced:[
-      {name:"One-Arm Push-Up Negatives",sets:3,reps:5,note:"Lower slowly on one arm, push back with both"},
-      {name:"Pseudo Planche Push-Ups",sets:3,reps:6,note:"Hands by hips, lean forward — shoulder crusher"},
-      {name:"Ring Archer Push-Ups",sets:3,reps:6,note:"Gymnastic rings + archer = elite difficulty"},
-    ]},
-    {id:"wide",name:"Wide Push-Ups",sets:3,reps:12,rest:"60s",muscle:"Outer Chest",advanced:[
-      {name:"Wide Decline Push-Ups",sets:3,reps:10,note:"Feet elevated + wide grip = upper outer chest"},
-      {name:"Wide Clap Push-Ups",sets:3,reps:8,note:"Explosive wide push — power development"},
-      {name:"Wide Ring Push-Ups",sets:3,reps:10,note:"Rings destabilise the wide position massively"},
-    ]},
-    {id:"pseudo",name:"Pseudo Planche Push-Ups",sets:3,reps:8,rest:"60s",muscle:"Chest, Shoulders",advanced:[
-      {name:"Planche Lean Push-Ups",sets:3,reps:8,note:"Push forward not up — chest takes everything"},
-      {name:"Advanced Tuck Planche Hold",sets:3,reps:1,repUnit:"×10s",note:"Hips tucked, feet off floor"},
-      {name:"Straddle Planche Attempts",sets:3,reps:1,repUnit:"×5s",note:"Legs spread, feet off floor — years of work"},
-    ]},
-    {id:"decdia",name:"Decline Diamond Push-Ups",sets:3,reps:10,rest:"45s",muscle:"Upper Chest, Triceps",advanced:[
-      {name:"Weighted Decline Diamond",sets:3,reps:8,note:"Plate/backpack on back for progressive overload"},
-      {name:"Ring Diamond Push-Ups",sets:3,reps:8,note:"Rings add brutal instability"},
-      {name:"Clap Diamond Push-Ups",sets:3,reps:6,note:"Explosive version — power + tricep strength"},
-    ]},
-    {id:"deeprom",name:"Deep ROM Push-Ups",sets:3,reps:8,rest:"45s",muscle:"Full Chest Stretch",advanced:[
-      {name:"Deficit Push-Ups on Books",sets:3,reps:10,note:"Hands on books/dumbbells for deeper range"},
-      {name:"Ring Deep ROM",sets:3,reps:8,note:"Rings allow maximum stretch at the bottom"},
-      {name:"Archer Deep ROM",sets:3,reps:6,note:"Combine archer lean with deep range — elite"},
-    ]},
-    {id:"pushhold",name:"Push-Up Hold",sets:3,reps:1,repUnit:"×20s",rest:"30s",muscle:"Chest, Core",advanced:[
-      {name:"Low Hold (2cm off floor)",sets:3,reps:1,repUnit:"×15s",note:"Hold just barely above the floor — intense"},
-      {name:"One-Arm Hold",sets:3,reps:1,repUnit:"×8s each",note:"Balance in top position on one arm"},
-      {name:"Ring Push-Up Hold",sets:3,reps:1,repUnit:"×15s",note:"Rings flared out slightly — shoulder stability"},
-    ]},
-  ]},
-  Tuesday:{exercises:[
-    {id:"pullup",name:"Pull-Ups",sets:4,reps:6,rest:"90s",muscle:"Back, Biceps",advanced:[
-      {name:"Weighted Pull-Ups",sets:4,reps:4,note:"Backpack with books — progressive overload"},
-      {name:"Archer Pull-Ups",sets:3,reps:4,note:"Shift weight side-to-side — isolates each arm"},
-      {name:"L-Sit Pull-Ups",sets:3,reps:4,note:"Legs parallel throughout — core+pull combo"},
-    ]},
-    {id:"chinup",name:"Chin-Ups",sets:3,reps:7,rest:"90s",muscle:"Back, Biceps",advanced:[
-      {name:"Weighted Chin-Ups",sets:3,reps:5,note:"Add load — progression is the goal"},
-      {name:"Slow Negative Chin-Ups",sets:3,reps:5,note:"6–8 second lower — max muscle damage"},
-      {name:"Commando Chin-Ups",sets:3,reps:5,note:"Alternate which side of bar you pull toward"},
-    ]},
-    {id:"superman",name:"Superman Pulls",sets:3,reps:15,rest:"45s",muscle:"Lower Back, Glutes",advanced:[
-      {name:"Weighted Superman",sets:3,reps:12,note:"Hold a light weight in hands while extending"},
-      {name:"Superman Hold",sets:3,reps:1,repUnit:"×20s",note:"Hold top position — isometric back strength"},
-      {name:"Band Superman",sets:3,reps:12,note:"Band around feet adds resistance at top"},
-    ]},
-    {id:"backext",name:"Back Extensions",sets:3,reps:15,rest:"45s",muscle:"Lower Back, Hamstrings",advanced:[
-      {name:"Weighted Back Extensions",sets:3,reps:12,note:"Hold a weight plate or book on chest"},
-      {name:"Tempo Back Extensions",sets:3,reps:10,note:"3s up, 1s hold, 3s down — feels brutal"},
-      {name:"Single-Leg Back Extensions",sets:3,reps:10,note:"One leg at a time — balance + strength"},
-    ]},
-    {id:"deadhang",name:"Dead Hang",sets:3,reps:1,repUnit:"×30s",rest:"45s",muscle:"Grip, Shoulders",advanced:[
-      {name:"Towel Dead Hangs",sets:3,reps:1,repUnit:"×20s",note:"Hang from towel draped over bar — grip killer"},
-      {name:"One-Arm Dead Hang",sets:3,reps:1,repUnit:"×10s each",note:"Each arm — builds toward one-arm pull-up"},
-      {name:"L-Hang Hold",sets:3,reps:1,repUnit:"×15s",note:"Legs parallel while hanging — core + grip"},
-    ]},
-    {id:"towelrow",name:"Static Towel Row Hold",sets:3,reps:1,repUnit:"×20s",rest:"45s",muscle:"Upper Back, Grip",advanced:[
-      {name:"Towel Row Pulses",sets:3,reps:15,note:"Small pulls at mid-range — constant tension"},
-      {name:"Single-Arm Towel Hold",sets:3,reps:1,repUnit:"×15s each",note:"One arm at a time for imbalance correction"},
-      {name:"Weighted Towel Hold",sets:3,reps:1,repUnit:"×15s",note:"Backpack on — adds real load to the isometric"},
-    ]},
-  ]},
-  Wednesday:{exercises:[
-    {id:"bss",name:"Bulgarian Split Squats",sets:4,reps:10,rest:"60s",muscle:"Quads, Glutes",advanced:[
-      {name:"Jumping BSS",sets:3,reps:8,note:"Explosive jump from bottom — builds power"},
-      {name:"Deficit BSS",sets:3,reps:8,note:"Front foot on step — deeper range of motion"},
-      {name:"Weighted BSS",sets:4,reps:8,note:"Hold heavy objects — serious strength builder"},
-    ]},
-    {id:"shrimp",name:"Shrimp Squats",sets:3,reps:8,rest:"60s",muscle:"Quads, Balance",advanced:[
-      {name:"Shrimp Squat + Pause",sets:3,reps:6,note:"Hold bottom for 3s each rep — brutal burn"},
-      {name:"Weighted Shrimp Squats",sets:3,reps:6,note:"Hold a weight for added resistance"},
-      {name:"Pistol Squat Negatives",sets:3,reps:5,note:"Extend front leg — lower on one leg slowly"},
-    ]},
-    {id:"jumpsquat",name:"Jump Squats",sets:3,reps:12,rest:"60s",muscle:"Quads, Power",advanced:[
-      {name:"Broad Jump Squats",sets:3,reps:8,note:"Jump for distance — horizontal power"},
-      {name:"Single-Leg Jump Squats",sets:3,reps:6,note:"One leg — brutal conditioning"},
-      {name:"Depth Jump Squats",sets:3,reps:8,note:"Step off, land, immediately jump"},
-    ]},
-    {id:"hamslide",name:"Hamstring Slides",sets:3,reps:10,rest:"60s",muscle:"Hamstrings",advanced:[
-      {name:"Single-Leg Ham Slides",sets:3,reps:8,note:"One leg at a time — double the tension"},
-      {name:"Weighted Ham Slides",sets:3,reps:8,note:"Plate on stomach adds load"},
-      {name:"Nordic Curl Negatives",sets:3,reps:5,note:"Kneel, feet anchored, lower your torso slowly"},
-    ]},
-    {id:"calfslr",name:"Single-Leg Calf Raises",sets:4,reps:20,rest:"45s",muscle:"Calves",advanced:[
-      {name:"Deficit Single-Leg Raises",sets:4,reps:15,note:"Stand on edge of step — deeper range"},
-      {name:"Slow Eccentric Raises",sets:3,reps:12,note:"3s up, pause, 5s down — max tension"},
-      {name:"Weighted Deficit Raises",sets:3,reps:12,note:"Hold weight + deficit — calf destroyer"},
-    ]},
-    {id:"wallsit",name:"Wall Sit",sets:3,reps:1,repUnit:"×45s",rest:"45s",muscle:"Quads, Isometric",advanced:[
-      {name:"Single-Leg Wall Sit",sets:3,reps:1,repUnit:"×25s each",note:"One leg extended — double the load"},
-      {name:"Wall Sit + Calf Raises",sets:3,reps:15,note:"Calf raises while sitting — combo strength"},
-      {name:"Wall Sit + Weight",sets:3,reps:1,repUnit:"×40s",note:"Hold a heavy object on your lap"},
-    ]},
-  ]},
-  Thursday:{exercises:[
-    {id:"legraise",name:"Hanging/Floor Leg Raises",sets:3,reps:12,rest:"45s",muscle:"Lower Abs",advanced:[
-      {name:"Toes-to-Bar",sets:3,reps:8,note:"From dead hang, bring toes all the way up"},
-      {name:"Windshield Wipers",sets:3,reps:6,note:"Rotate legs side to side at the top"},
-      {name:"L-Hang Hold",sets:3,reps:1,repUnit:"×20s",note:"Hold legs parallel — brutal isometric core"},
-    ]},
-    {id:"vups",name:"V-Ups",sets:3,reps:15,rest:"45s",muscle:"Full Abs",advanced:[
-      {name:"Weighted V-Ups",sets:3,reps:12,note:"Hold a light weight at your chest"},
-      {name:"Tuck-to-V-Up",sets:3,reps:12,note:"Alternate tuck and full V — builds compression"},
-      {name:"Single-Arm V-Ups",sets:3,reps:10,note:"One arm reaching toward opposite foot"},
-    ]},
-    {id:"plankelbow",name:"Plank to Elbow Touch",sets:3,reps:15,rest:"45s",muscle:"Core, Obliques",advanced:[
-      {name:"Plank Shoulder Tap Combo",sets:3,reps:16,note:"Alternate shoulder tap + knee touch at end"},
-      {name:"Ring Plank Taps",sets:3,reps:12,note:"Feet on rings — extreme instability"},
-      {name:"Weighted Plank Taps",sets:3,reps:12,note:"Plate on back while doing the taps"},
-    ]},
-    {id:"hollow",name:"Hollow Body Hold",sets:3,reps:1,repUnit:"×30s",rest:"45s",muscle:"Deep Core",advanced:[
-      {name:"Hollow Body Rocks",sets:3,reps:20,note:"Rock forward/back while maintaining hollow"},
-      {name:"Hollow + Leg Raise",sets:3,reps:10,note:"Raise/lower legs from hollow position"},
-      {name:"Weighted Hollow Hold",sets:3,reps:1,repUnit:"×20s",note:"Hold a light weight overhead while holding hollow"},
-    ]},
-    {id:"sideplank",name:"Side Plank Hip Lifts",sets:3,reps:12,rest:"45s",muscle:"Obliques",advanced:[
-      {name:"Side Plank with Leg Raise",sets:3,reps:10,note:"Raise top leg while doing hip lifts"},
-      {name:"Star Side Plank Hold",sets:3,reps:1,repUnit:"×20s each",note:"Full extension — arm and leg raised"},
-      {name:"Ring Side Plank",sets:3,reps:1,repUnit:"×20s each",note:"Feet on ring — insane lateral stability"},
-    ]},
-    {id:"russian",name:"Russian Twists",sets:3,reps:20,rest:"45s",muscle:"Obliques, Core",advanced:[
-      {name:"Weighted Russian Twists",sets:3,reps:16,note:"Hold a heavy book or water bottle"},
-      {name:"V-Sit Russian Twists",sets:3,reps:16,note:"Feet off the floor — full core engagement"},
-      {name:"Slow Russian Twists",sets:3,reps:12,note:"3 seconds each side — constant tension"},
-    ]},
-  ]},
-  Friday:{exercises:[
-    {id:"benchdips",name:"Bench Dips",sets:3,reps:12,rest:"60s",muscle:"Triceps",advanced:[
-      {name:"Weighted Bench Dips",sets:3,reps:10,note:"Plate on lap — adds significant load"},
-      {name:"Elevated Bench Dips",sets:3,reps:10,note:"Feet elevated on a chair — more bodyweight"},
-      {name:"Ring Dips",sets:3,reps:8,note:"Gymnastic rings — hardest dip variation"},
-    ]},
-    {id:"bwtricep",name:"BW Tricep Extensions",sets:3,reps:12,rest:"60s",muscle:"Triceps",advanced:[
-      {name:"Slow Eccentric Extensions",sets:3,reps:10,note:"Lower in 5s, explosive push — muscle damage"},
-      {name:"Ring Tricep Extensions",sets:3,reps:8,note:"Rings add instability and range of motion"},
-      {name:"Close Grip Skull Crushers",sets:3,reps:10,note:"On the floor — pure tricep isolation"},
-    ]},
-    {id:"diamondpike",name:"Diamond Pike Push-Ups",sets:3,reps:8,rest:"60s",muscle:"Shoulders, Triceps",advanced:[
-      {name:"Elevated Diamond Pike PU",sets:3,reps:8,note:"Feet on chair = closer to HSPU"},
-      {name:"Wall HSPU + Diamond Grip",sets:3,reps:5,note:"Handstand push-up with close grip"},
-      {name:"Ring Diamond Push-Ups",sets:3,reps:6,note:"Rings + diamond grip — elite difficulty"},
-    ]},
-    {id:"towelcurl",name:"Towel Hammer Curls",sets:3,reps:12,rest:"45s",muscle:"Biceps, Brachialis",advanced:[
-      {name:"Slow Eccentric Towel Curls",sets:3,reps:10,note:"Curl up fast, lower in 5s — max tension"},
-      {name:"Single-Arm Towel Curls",sets:3,reps:10,note:"One arm focuses all effort — fixes imbalance"},
-      {name:"Towel Curl + Supinate",sets:3,reps:10,note:"Rotate wrist to supinated at top — peaks the bicep"},
-    ]},
-    {id:"isohold",name:"Isometric Towel Hold",sets:3,reps:1,repUnit:"×30s",rest:"45s",muscle:"Biceps, Grip",advanced:[
-      {name:"Heavy Iso Hold",sets:3,reps:1,repUnit:"×20s",note:"Use heavier resistance towel — harder pull"},
-      {name:"Single-Arm Iso Hold",sets:3,reps:1,repUnit:"×15s each",note:"One arm at a time — fixes imbalances"},
-      {name:"Iso Hold + Pulse",sets:3,reps:15,note:"Small movements at mid-range during hold"},
-    ]},
-    {id:"forearmwall",name:"Forearm Wall Push",sets:3,reps:15,rest:"30s",muscle:"Forearms",advanced:[
-      {name:"Wrist Push-Ups",sets:3,reps:10,note:"Push-ups on the backs of your fists"},
-      {name:"Towel Wringing",sets:3,reps:20,note:"Wring a wet towel as hard as possible"},
-      {name:"Finger Push-Ups",sets:3,reps:8,note:"Push-ups on your fingertips — grip + forearm"},
-    ]},
-  ]},
-  Saturday:{exercises:[
-    {id:"burpees",name:"Burpees",sets:4,reps:10,rest:"90s",muscle:"Full Body",advanced:[
-      {name:"Burpee Pull-Ups",sets:4,reps:8,note:"Jump into a pull-up at the top — elite combo"},
-      {name:"Muscle-Up Burpees",sets:3,reps:5,note:"Jump into a muscle-up — seriously hard"},
-      {name:"Burpee Box Jumps",sets:3,reps:8,note:"Jump onto elevated surface at top"},
-    ]},
-    {id:"jumppu",name:"Jumping Push-Ups",sets:3,reps:10,rest:"60s",muscle:"Chest, Power",advanced:[
-      {name:"Clap Push-Ups",sets:3,reps:10,note:"Explosive push with mid-air clap"},
-      {name:"Double Clap Push-Ups",sets:3,reps:6,note:"Two claps before landing — serious power"},
-      {name:"Side-to-Side Clap Push-Ups",sets:3,reps:8,note:"Clap and land to the side alternating"},
-    ]},
-    {id:"jumpbss",name:"Jumping Bulgarian Split Squats",sets:3,reps:8,rest:"60s",muscle:"Legs, Power",advanced:[
-      {name:"Weighted Jump BSS",sets:3,reps:6,note:"Hold weights and still explode — serious strength"},
-      {name:"Continuous Jump BSS",sets:3,reps:10,note:"No pause at bottom — pure conditioning"},
-      {name:"BSS Broad Jump",sets:3,reps:6,note:"Jump forward not up — horizontal power"},
-    ]},
-    {id:"broadjump",name:"Broad Jumps",sets:3,reps:8,rest:"60s",muscle:"Legs, Power",advanced:[
-      {name:"Broad Jump + Squat",sets:3,reps:6,note:"Land in squat, hold 2s, jump again"},
-      {name:"Triple Broad Jumps",sets:3,reps:5,note:"Three consecutive jumps — max distance"},
-      {name:"Weighted Broad Jumps",sets:3,reps:6,note:"Hold light weights — power + resistance"},
-    ]},
-    {id:"lsit",name:"L-Sit Hold",sets:3,reps:1,repUnit:"×20s",rest:"45s",muscle:"Core, Hip Flexors",advanced:[
-      {name:"Full L-Sit",sets:3,reps:1,repUnit:"×20s",note:"Legs fully extended parallel to floor"},
-      {name:"L-Sit to V-Sit",sets:3,reps:5,note:"Raise legs above parallel — advanced compression"},
-      {name:"Straddle L-Sit",sets:3,reps:1,repUnit:"×15s",note:"Legs spread wide — different compression challenge"},
-    ]},
-    {id:"handstand",name:"Handstand Wall Hold",sets:3,reps:1,repUnit:"×30s",rest:"90s",muscle:"Shoulders, Core",advanced:[
-      {name:"Freestanding Handstand",sets:5,reps:1,repUnit:"×20s",note:"Away from wall — solid HS balance"},
-      {name:"Wall HSPU Negatives",sets:3,reps:5,note:"Lower head to floor slowly then kick down"},
-      {name:"Handstand Walks",sets:3,reps:1,repUnit:"×5m",note:"Walk on hands — requires freestanding control"},
-    ]},
-  ]},
+Monday:{exercises:[
+{id:"archer",name:"Archer Push-Ups",sets:4,reps:8,rest:"60s",muscle:"Chest, Triceps",advanced:[
+{name:"One-Arm Push-Up Negatives",sets:3,reps:5,note:"Lower slowly on one arm, push back with both"},
+{name:"Pseudo Planche Push-Ups",sets:3,reps:6,note:"Hands by hips, lean forward — shoulder crusher"},
+{name:"Ring Archer Push-Ups",sets:3,reps:6,note:"Gymnastic rings + archer = elite difficulty"},
+]},
+{id:"wide",name:"Wide Push-Ups",sets:3,reps:12,rest:"60s",muscle:"Outer Chest",advanced:[
+{name:"Wide Decline Push-Ups",sets:3,reps:10,note:"Feet elevated + wide grip = upper outer chest"},
+{name:"Wide Clap Push-Ups",sets:3,reps:8,note:"Explosive wide push — power development"},
+{name:"Wide Ring Push-Ups",sets:3,reps:10,note:"Rings destabilise the wide position massively"},
+]},
+{id:"pseudo",name:"Pseudo Planche Push-Ups",sets:3,reps:8,rest:"60s",muscle:"Chest, Shoulders",advanced:[
+{name:"Planche Lean Push-Ups",sets:3,reps:8,note:"Push forward not up — chest takes everything"},
+{name:"Advanced Tuck Planche Hold",sets:3,reps:1,repUnit:"×10s",note:"Hips tucked, feet off floor"},
+{name:"Straddle Planche Attempts",sets:3,reps:1,repUnit:"×5s",note:"Legs spread, feet off floor — years of work"},
+]},
+{id:"decdia",name:"Decline Diamond Push-Ups",sets:3,reps:10,rest:"45s",muscle:"Upper Chest, Triceps",advanced:[
+{name:"Weighted Decline Diamond",sets:3,reps:8,note:"Plate/backpack on back for progressive overload"},
+{name:"Ring Diamond Push-Ups",sets:3,reps:8,note:"Rings add brutal instability"},
+{name:"Clap Diamond Push-Ups",sets:3,reps:6,note:"Explosive version — power + tricep strength"},
+]},
+{id:"deeprom",name:"Deep ROM Push-Ups",sets:3,reps:8,rest:"45s",muscle:"Full Chest Stretch",advanced:[
+{name:"Deficit Push-Ups on Books",sets:3,reps:10,note:"Hands on books/dumbbells for deeper range"},
+{name:"Ring Deep ROM",sets:3,reps:8,note:"Rings allow maximum stretch at the bottom"},
+{name:"Archer Deep ROM",sets:3,reps:6,note:"Combine archer lean with deep range — elite"},
+]},
+{id:"pushhold",name:"Push-Up Hold",sets:3,reps:1,repUnit:"×20s",rest:"30s",muscle:"Chest, Core",advanced:[
+{name:"Low Hold (2cm off floor)",sets:3,reps:1,repUnit:"×15s",note:"Hold just barely above the floor — intense"},
+{name:"One-Arm Hold",sets:3,reps:1,repUnit:"×8s each",note:"Balance in top position on one arm"},
+{name:"Ring Push-Up Hold",sets:3,reps:1,repUnit:"×15s",note:"Rings flared out slightly — shoulder stability"},
+]},
+]},
+Tuesday:{exercises:[
+{id:"pullup",name:"Pull-Ups",sets:4,reps:6,rest:"90s",muscle:"Back, Biceps",advanced:[
+{name:"Weighted Pull-Ups",sets:4,reps:4,note:"Backpack with books — progressive overload"},
+{name:"Archer Pull-Ups",sets:3,reps:4,note:"Shift weight side-to-side — isolates each arm"},
+{name:"L-Sit Pull-Ups",sets:3,reps:4,note:"Legs parallel throughout — core+pull combo"},
+]},
+{id:"chinup",name:"Chin-Ups",sets:3,reps:7,rest:"90s",muscle:"Back, Biceps",advanced:[
+{name:"Weighted Chin-Ups",sets:3,reps:5,note:"Add load — progression is the goal"},
+{name:"Slow Negative Chin-Ups",sets:3,reps:5,note:"6–8 second lower — max muscle damage"},
+{name:"Commando Chin-Ups",sets:3,reps:5,note:"Alternate which side of bar you pull toward"},
+]},
+{id:"superman",name:"Superman Pulls",sets:3,reps:15,rest:"45s",muscle:"Lower Back, Glutes",advanced:[
+{name:"Weighted Superman",sets:3,reps:12,note:"Hold a light weight in hands while extending"},
+{name:"Superman Hold",sets:3,reps:1,repUnit:"×20s",note:"Hold top position — isometric back strength"},
+{name:"Band Superman",sets:3,reps:12,note:"Band around feet adds resistance at top"},
+]},
+{id:"backext",name:"Back Extensions",sets:3,reps:15,rest:"45s",muscle:"Lower Back, Hamstrings",advanced:[
+{name:"Weighted Back Extensions",sets:3,reps:12,note:"Hold a weight plate or book on chest"},
+{name:"Tempo Back Extensions",sets:3,reps:10,note:"3s up, 1s hold, 3s down — feels brutal"},
+{name:"Single-Leg Back Extensions",sets:3,reps:10,note:"One leg at a time — balance + strength"},
+]},
+{id:"deadhang",name:"Dead Hang",sets:3,reps:1,repUnit:"×30s",rest:"45s",muscle:"Grip, Shoulders",advanced:[
+{name:"Towel Dead Hangs",sets:3,reps:1,repUnit:"×20s",note:"Hang from towel draped over bar — grip killer"},
+{name:"One-Arm Dead Hang",sets:3,reps:1,repUnit:"×10s each",note:"Each arm — builds toward one-arm pull-up"},
+{name:"L-Hang Hold",sets:3,reps:1,repUnit:"×15s",note:"Legs parallel while hanging — core + grip"},
+]},
+{id:"towelrow",name:"Static Towel Row Hold",sets:3,reps:1,repUnit:"×20s",rest:"45s",muscle:"Upper Back, Grip",advanced:[
+{name:"Towel Row Pulses",sets:3,reps:15,note:"Small pulls at mid-range — constant tension"},
+{name:"Single-Arm Towel Hold",sets:3,reps:1,repUnit:"×15s each",note:"One arm at a time for imbalance correction"},
+{name:"Weighted Towel Hold",sets:3,reps:1,repUnit:"×15s",note:"Backpack on — adds real load to the isometric"},
+]},
+]},
+Wednesday:{exercises:[
+{id:"bss",name:"Bulgarian Split Squats",sets:4,reps:10,rest:"60s",muscle:"Quads, Glutes",advanced:[
+{name:"Jumping BSS",sets:3,reps:8,note:"Explosive jump from bottom — builds power"},
+{name:"Deficit BSS",sets:3,reps:8,note:"Front foot on step — deeper range of motion"},
+{name:"Weighted BSS",sets:4,reps:8,note:"Hold heavy objects — serious strength builder"},
+]},
+{id:"shrimp",name:"Shrimp Squats",sets:3,reps:8,rest:"60s",muscle:"Quads, Balance",advanced:[
+{name:"Shrimp Squat + Pause",sets:3,reps:6,note:"Hold bottom for 3s each rep — brutal burn"},
+{name:"Weighted Shrimp Squats",sets:3,reps:6,note:"Hold a weight for added resistance"},
+{name:"Pistol Squat Negatives",sets:3,reps:5,note:"Extend front leg — lower on one leg slowly"},
+]},
+{id:"jumpsquat",name:"Jump Squats",sets:3,reps:12,rest:"60s",muscle:"Quads, Power",advanced:[
+{name:"Broad Jump Squats",sets:3,reps:8,note:"Jump for distance — horizontal power"},
+{name:"Single-Leg Jump Squats",sets:3,reps:6,note:"One leg — brutal conditioning"},
+{name:"Depth Jump Squats",sets:3,reps:8,note:"Step off, land, immediately jump"},
+]},
+{id:"hamslide",name:"Hamstring Slides",sets:3,reps:10,rest:"60s",muscle:"Hamstrings",advanced:[
+{name:"Single-Leg Ham Slides",sets:3,reps:8,note:"One leg at a time — double the tension"},
+{name:"Weighted Ham Slides",sets:3,reps:8,note:"Plate on stomach adds load"},
+{name:"Nordic Curl Negatives",sets:3,reps:5,note:"Kneel, feet anchored, lower your torso slowly"},
+]},
+{id:"calfslr",name:"Single-Leg Calf Raises",sets:4,reps:20,rest:"45s",muscle:"Calves",advanced:[
+{name:"Deficit Single-Leg Raises",sets:4,reps:15,note:"Stand on edge of step — deeper range"},
+{name:"Slow Eccentric Raises",sets:3,reps:12,note:"3s up, pause, 5s down — max tension"},
+{name:"Weighted Deficit Raises",sets:3,reps:12,note:"Hold weight + deficit — calf destroyer"},
+]},
+{id:"wallsit",name:"Wall Sit",sets:3,reps:1,repUnit:"×45s",rest:"45s",muscle:"Quads, Isometric",advanced:[
+{name:"Single-Leg Wall Sit",sets:3,reps:1,repUnit:"×25s each",note:"One leg extended — double the load"},
+{name:"Wall Sit + Calf Raises",sets:3,reps:15,note:"Calf raises while sitting — combo strength"},
+{name:"Wall Sit + Weight",sets:3,reps:1,repUnit:"×40s",note:"Hold a heavy object on your lap"},
+]},
+]},
+Thursday:{exercises:[
+{id:"legraise",name:"Hanging/Floor Leg Raises",sets:3,reps:12,rest:"45s",muscle:"Lower Abs",advanced:[
+{name:"Toes-to-Bar",sets:3,reps:8,note:"From dead hang, bring toes all the way up"},
+{name:"Windshield Wipers",sets:3,reps:6,note:"Rotate legs side to side at the top"},
+{name:"L-Hang Hold",sets:3,reps:1,repUnit:"×20s",note:"Hold legs parallel — brutal isometric core"},
+]},
+{id:"vups",name:"V-Ups",sets:3,reps:15,rest:"45s",muscle:"Full Abs",advanced:[
+{name:"Weighted V-Ups",sets:3,reps:12,note:"Hold a light weight at your chest"},
+{name:"Tuck-to-V-Up",sets:3,reps:12,note:"Alternate tuck and full V — builds compression"},
+{name:"Single-Arm V-Ups",sets:3,reps:10,note:"One arm reaching toward opposite foot"},
+]},
+{id:"plankelbow",name:"Plank to Elbow Touch",sets:3,reps:15,rest:"45s",muscle:"Core, Obliques",advanced:[
+{name:"Plank Shoulder Tap Combo",sets:3,reps:16,note:"Alternate shoulder tap + knee touch at end"},
+{name:"Ring Plank Taps",sets:3,reps:12,note:"Feet on rings — extreme instability"},
+{name:"Weighted Plank Taps",sets:3,reps:12,note:"Plate on back while doing the taps"},
+]},
+{id:"hollow",name:"Hollow Body Hold",sets:3,reps:1,repUnit:"×30s",rest:"45s",muscle:"Deep Core",advanced:[
+{name:"Hollow Body Rocks",sets:3,reps:20,note:"Rock forward/back while maintaining hollow"},
+{name:"Hollow + Leg Raise",sets:3,reps:10,note:"Raise/lower legs from hollow position"},
+{name:"Weighted Hollow Hold",sets:3,reps:1,repUnit:"×20s",note:"Hold a light weight overhead while holding hollow"},
+]},
+{id:"sideplank",name:"Side Plank Hip Lifts",sets:3,reps:12,rest:"45s",muscle:"Obliques",advanced:[
+{name:"Side Plank with Leg Raise",sets:3,reps:10,note:"Raise top leg while doing hip lifts"},
+{name:"Star Side Plank Hold",sets:3,reps:1,repUnit:"×20s each",note:"Full extension — arm and leg raised"},
+{name:"Ring Side Plank",sets:3,reps:1,repUnit:"×20s each",note:"Feet on ring — insane lateral stability"},
+]},
+{id:"russian",name:"Russian Twists",sets:3,reps:20,rest:"45s",muscle:"Obliques, Core",advanced:[
+{name:"Weighted Russian Twists",sets:3,reps:16,note:"Hold a heavy book or water bottle"},
+{name:"V-Sit Russian Twists",sets:3,reps:16,note:"Feet off the floor — full core engagement"},
+{name:"Slow Russian Twists",sets:3,reps:12,note:"3 seconds each side — constant tension"},
+]},
+]},
+Friday:{exercises:[
+{id:"benchdips",name:"Bench Dips",sets:3,reps:12,rest:"60s",muscle:"Triceps",advanced:[
+{name:"Weighted Bench Dips",sets:3,reps:10,note:"Plate on lap — adds significant load"},
+{name:"Elevated Bench Dips",sets:3,reps:10,note:"Feet elevated on a chair — more bodyweight"},
+{name:"Ring Dips",sets:3,reps:8,note:"Gymnastic rings — hardest dip variation"},
+]},
+{id:"bwtricep",name:"BW Tricep Extensions",sets:3,reps:12,rest:"60s",muscle:"Triceps",advanced:[
+{name:"Slow Eccentric Extensions",sets:3,reps:10,note:"Lower in 5s, explosive push — muscle damage"},
+{name:"Ring Tricep Extensions",sets:3,reps:8,note:"Rings add instability and range of motion"},
+{name:"Close Grip Skull Crushers",sets:3,reps:10,note:"On the floor — pure tricep isolation"},
+]},
+{id:"diamondpike",name:"Diamond Pike Push-Ups",sets:3,reps:8,rest:"60s",muscle:"Shoulders, Triceps",advanced:[
+{name:"Elevated Diamond Pike PU",sets:3,reps:8,note:"Feet on chair = closer to HSPU"},
+{name:"Wall HSPU + Diamond Grip",sets:3,reps:5,note:"Handstand push-up with close grip"},
+{name:"Ring Diamond Push-Ups",sets:3,reps:6,note:"Rings + diamond grip — elite difficulty"},
+]},
+{id:"towelcurl",name:"Towel Hammer Curls",sets:3,reps:12,rest:"45s",muscle:"Biceps, Brachialis",advanced:[
+{name:"Slow Eccentric Towel Curls",sets:3,reps:10,note:"Curl up fast, lower in 5s — max tension"},
+{name:"Single-Arm Towel Curls",sets:3,reps:10,note:"One arm focuses all effort — fixes imbalance"},
+{name:"Towel Curl + Supinate",sets:3,reps:10,note:"Rotate wrist to supinated at top — peaks the bicep"},
+]},
+{id:"isohold",name:"Isometric Towel Hold",sets:3,reps:1,repUnit:"×30s",rest:"45s",muscle:"Biceps, Grip",advanced:[
+{name:"Heavy Iso Hold",sets:3,reps:1,repUnit:"×20s",note:"Use heavier resistance towel — harder pull"},
+{name:"Single-Arm Iso Hold",sets:3,reps:1,repUnit:"×15s each",note:"One arm at a time — fixes imbalances"},
+{name:"Iso Hold + Pulse",sets:3,reps:15,note:"Small movements at mid-range during hold"},
+]},
+{id:"forearmwall",name:"Forearm Wall Push",sets:3,reps:15,rest:"30s",muscle:"Forearms",advanced:[
+{name:"Wrist Push-Ups",sets:3,reps:10,note:"Push-ups on the backs of your fists"},
+{name:"Towel Wringing",sets:3,reps:20,note:"Wring a wet towel as hard as possible"},
+{name:"Finger Push-Ups",sets:3,reps:8,note:"Push-ups on your fingertips — grip + forearm"},
+]},
+]},
+Saturday:{exercises:[
+{id:"burpees",name:"Burpees",sets:4,reps:10,rest:"90s",muscle:"Full Body",advanced:[
+{name:"Burpee Pull-Ups",sets:4,reps:8,note:"Jump into a pull-up at the top — elite combo"},
+{name:"Muscle-Up Burpees",sets:3,reps:5,note:"Jump into a muscle-up — seriously hard"},
+{name:"Burpee Box Jumps",sets:3,reps:8,note:"Jump onto elevated surface at top"},
+]},
+{id:"jumppu",name:"Jumping Push-Ups",sets:3,reps:10,rest:"60s",muscle:"Chest, Power",advanced:[
+{name:"Clap Push-Ups",sets:3,reps:10,note:"Explosive push with mid-air clap"},
+{name:"Double Clap Push-Ups",sets:3,reps:6,note:"Two claps before landing — serious power"},
+{name:"Side-to-Side Clap Push-Ups",sets:3,reps:8,note:"Clap and land to the side alternating"},
+]},
+{id:"jumpbss",name:"Jumping Bulgarian Split Squats",sets:3,reps:8,rest:"60s",muscle:"Legs, Power",advanced:[
+{name:"Weighted Jump BSS",sets:3,reps:6,note:"Hold weights and still explode — serious strength"},
+{name:"Continuous Jump BSS",sets:3,reps:10,note:"No pause at bottom — pure conditioning"},
+{name:"BSS Broad Jump",sets:3,reps:6,note:"Jump forward not up — horizontal power"},
+]},
+{id:"broadjump",name:"Broad Jumps",sets:3,reps:8,rest:"60s",muscle:"Legs, Power",advanced:[
+{name:"Broad Jump + Squat",sets:3,reps:6,note:"Land in squat, hold 2s, jump again"},
+{name:"Triple Broad Jumps",sets:3,reps:5,note:"Three consecutive jumps — max distance"},
+{name:"Weighted Broad Jumps",sets:3,reps:6,note:"Hold light weights — power + resistance"},
+]},
+{id:"lsit",name:"L-Sit Hold",sets:3,reps:1,repUnit:"×20s",rest:"45s",muscle:"Core, Hip Flexors",advanced:[
+{name:"Full L-Sit",sets:3,reps:1,repUnit:"×20s",note:"Legs fully extended parallel to floor"},
+{name:"L-Sit to V-Sit",sets:3,reps:5,note:"Raise legs above parallel — advanced compression"},
+{name:"Straddle L-Sit",sets:3,reps:1,repUnit:"×15s",note:"Legs spread wide — different compression challenge"},
+]},
+{id:"handstand",name:"Handstand Wall Hold",sets:3,reps:1,repUnit:"×30s",rest:"90s",muscle:"Shoulders, Core",advanced:[
+{name:"Freestanding Handstand",sets:5,reps:1,repUnit:"×20s",note:"Away from wall — solid HS balance"},
+{name:"Wall HSPU Negatives",sets:3,reps:5,note:"Lower head to floor slowly then kick down"},
+{name:"Handstand Walks",sets:3,reps:1,repUnit:"×5m",note:"Walk on hands — requires freestanding control"},
+]},
+]},
 };
-
 const STRETCHES=[
-  {name:"Chest Doorway Stretch",duration:"30s each side",cue:"Elbow at 90°, lean into doorframe"},
-  {name:"Lat Stretch (bar hang)",duration:"45s",cue:"Dead hang, let shoulders fully decompress"},
-  {name:"Hip Flexor Lunge Stretch",duration:"30s each side",cue:"Back knee on ground, push hips forward"},
-  {name:"Hamstring Forward Fold",duration:"45s",cue:"Soft knees, reach toward floor, breathe out"},
-  {name:"Thoracic Spine Rotation",duration:"10 reps each side",cue:"Seated, rotate upper back not your hips"},
-  {name:"Shoulder Cross-Body",duration:"30s each side",cue:"Pull arm across chest, keep shoulder down"},
-  {name:"Wrist Flexor Stretch",duration:"20s each side",cue:"Palm up, gently pull fingers back"},
+{name:"Chest Doorway Stretch",duration:"30s each side",cue:"Elbow at 90°, lean into doorframe"},
+{name:"Lat Stretch (bar hang)",duration:"45s",cue:"Dead hang, let shoulders fully decompress"},
+{name:"Hip Flexor Lunge Stretch",duration:"30s each side",cue:"Back knee on ground, push hips forward"},
+{name:"Hamstring Forward Fold",duration:"45s",cue:"Soft knees, reach toward floor, breathe out"},
+{name:"Thoracic Spine Rotation",duration:"10 reps each side",cue:"Seated, rotate upper back not your hips"},
+{name:"Shoulder Cross-Body",duration:"30s each side",cue:"Pull arm across chest, keep shoulder down"},
+{name:"Wrist Flexor Stretch",duration:"20s each side",cue:"Palm up, gently pull fingers back"},
 ];
-
 const TIMER_PRESETS=[20,30,45,60,90,120];
 const CIRC=2*Math.PI*38;
-
 // ══════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════
@@ -542,361 +522,409 @@ let selDay="Monday";
 let progressions={},showAdv={},showProg={},completed={},stretchDone={};
 let timerSel=null,timerLeft=0,timerRunning=false,timerDone=false,timerInterval=null;
 let audioCtx=null;
+// ══════════════════════════════════════════════
+// CLOUD SAVE (Firebase Firestore)
+// ══════════════════════════════════════════════
+const firebaseConfig={
+  apiKey:"AIzaSyBGvbnj8wA3-7a5gaUjPltsdYlDkJe6XBc",
+  authDomain:"gymm-cd483.firebaseapp.com",
+  projectId:"gymm-cd483",
+  storageBucket:"gymm-cd483.firebasestorage.app",
+  messagingSenderId:"206721301371",
+  appId:"1:206721301371:web:65cce538c1e3d6437c5bde",
+  measurementId:"G-1T3Z3SWKMD"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+const STATE_DOC=db.collection('gymTracker').doc('state');
+let saveTimeout=null;
+let stateLoaded=false;
 
+function setSyncStatus(text,color){
+  const el=document.getElementById('syncStatus');
+  if(!el) return;
+  el.textContent='·  '+text;
+  el.style.color=color||'#3a3a48';
+}
+
+async function loadState(){
+  setSyncStatus('loading…','#3a3a48');
+  try{
+    const snap=await STATE_DOC.get();
+    if(snap.exists){
+      const data=snap.data();
+      completed=data.completed||{};
+      progressions=data.progressions||{};
+      stretchDone=data.stretchDone||{};
+    }
+    setSyncStatus('synced ✓','#22c55e');
+  }catch(e){
+    console.error('Load failed',e);
+    setSyncStatus('offline — not saved','#ef4444');
+  }
+  stateLoaded=true;
+  renderAll();
+  initStretch();
+  if(document.getElementById('page-progress').classList.contains('active')) renderProgressPage();
+}
+
+function saveState(){
+  if(!stateLoaded) return; // don't overwrite cloud data before initial load finishes
+  setSyncStatus('saving…','#f97316');
+  clearTimeout(saveTimeout);
+  saveTimeout=setTimeout(async ()=>{
+    try{
+      await STATE_DOC.set({
+        completed,
+        progressions,
+        stretchDone,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+      },{merge:false});
+      setSyncStatus('synced ✓','#22c55e');
+    }catch(e){
+      console.error('Save failed',e);
+      setSyncStatus('offline — not saved','#ef4444');
+    }
+  },400);
+}
 // ══════════════════════════════════════════════
 // AUDIO
 // ══════════════════════════════════════════════
 function getACtx(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
 function playChime(){
-  const ctx=getACtx();
-  [[523.25,0],[659.25,0.18],[783.99,0.36],[1046.5,0.54]].forEach(([f,t])=>{
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.connect(g);g.connect(ctx.destination);
-    o.type='sine';o.frequency.value=f;
-    const st=ctx.currentTime+t;
-    g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(0.35,st+0.03);g.gain.exponentialRampToValueAtTime(0.001,st+0.55);
-    o.start(st);o.stop(st+0.6);
-  });
+const ctx=getACtx();
+[[523.25,0],[659.25,0.18],[783.99,0.36],[1046.5,0.54]].forEach(([f,t])=>{
+const o=ctx.createOscillator(),g=ctx.createGain();
+o.connect(g);g.connect(ctx.destination);
+o.type='sine';o.frequency.value=f;
+const st=ctx.currentTime+t;
+g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(0.35,st+0.03);g.gain.exponentialRampToValueAtTime(0.001,st+0.55);
+o.start(st);o.stop(st+0.6);
+});
 }
 function playTick(){
-  const ctx=getACtx();
-  const o=ctx.createOscillator(),g=ctx.createGain();
-  o.connect(g);g.connect(ctx.destination);
-  o.type='sine';o.frequency.value=880;
-  g.gain.setValueAtTime(0,ctx.currentTime);g.gain.linearRampToValueAtTime(0.08,ctx.currentTime+0.01);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.07);
-  o.start(ctx.currentTime);o.stop(ctx.currentTime+0.08);
+const ctx=getACtx();
+const o=ctx.createOscillator(),g=ctx.createGain();
+o.connect(g);g.connect(ctx.destination);
+o.type='sine';o.frequency.value=880;
+g.gain.setValueAtTime(0,ctx.currentTime);g.gain.linearRampToValueAtTime(0.08,ctx.currentTime+0.01);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.07);
+o.start(ctx.currentTime);o.stop(ctx.currentTime+0.08);
 }
-
 // ══════════════════════════════════════════════
 // NAV
 // ══════════════════════════════════════════════
 document.querySelectorAll('#nav button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById('page-'+b.dataset.tab).classList.add('active');
-    if(b.dataset.tab==='progress') renderProgressPage();
-  });
+b.addEventListener('click',()=>{
+document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
+b.classList.add('active');
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById('page-'+b.dataset.tab).classList.add('active');
+if(b.dataset.tab==='progress') renderProgressPage();
 });
-
+});
 // ══════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════
 function dayColor(d){ return DAY_COLORS[d]||'#888'; }
 function getProg(exId){ return(progressions[selDay]&&progressions[selDay][exId])||{sets:0,reps:0}; }
 function adj(exId,field,delta){
-  if(!progressions[selDay]) progressions[selDay]={};
-  if(!progressions[selDay][exId]) progressions[selDay][exId]={sets:0,reps:0};
-  const ex=WORKOUT[selDay].exercises.find(e=>e.id===exId);
-  const cur=progressions[selDay][exId][field]||0;
-  if((ex[field]||0)+cur+delta<1) return;
-  progressions[selDay][exId][field]=cur+delta;
-  renderExList();updateHeader();
+if(!progressions[selDay]) progressions[selDay]={};
+if(!progressions[selDay][exId]) progressions[selDay][exId]={sets:0,reps:0};
+const ex=WORKOUT[selDay].exercises.find(e=>e.id===exId);
+const cur=progressions[selDay][exId][field]||0;
+if((ex[field]||0)+cur+delta<1) return;
+progressions[selDay][exId][field]=cur+delta;
+renderExList();updateHeader();saveState();
 }
-
 // ══════════════════════════════════════════════
 // WORKOUT PAGE
 // ══════════════════════════════════════════════
 function renderDayTabs(){
-  const wrap=document.getElementById('daytabs');
-  wrap.innerHTML='';
-  DAYS.forEach(d=>{
-    const b=document.createElement('button');
-    b.className='dtab'+(d===selDay?' active':'');
-    const c=dayColor(d);
-    b.textContent=`${d.slice(0,3)} · ${DAY_LABELS[d]}`;
-    if(d===selDay){b.style.borderColor=c;b.style.background=c+'18';b.style.color=c;}
-    b.addEventListener('click',()=>{selDay=d;renderAll();});
-    wrap.appendChild(b);
-  });
+const wrap=document.getElementById('daytabs');
+wrap.innerHTML='';
+DAYS.forEach(d=>{
+const b=document.createElement('button');
+b.className='dtab'+(d===selDay?' active':'');
+const c=dayColor(d);
+b.textContent=`${d.slice(0,3)} · ${DAY_LABELS[d]}`;
+if(d===selDay){b.style.borderColor=c;b.style.background=c+'18';b.style.color=c;}
+b.addEventListener('click',()=>{selDay=d;renderAll();});
+wrap.appendChild(b);
+});
 }
-
 function renderProgressBar(){
-  const exes=WORKOUT[selDay].exercises;
-  const done=exes.filter(e=>completed[`${selDay}-${e.id}`]).length;
-  document.getElementById('doneLabel').textContent=`${done}/${exes.length} done`;
-  document.getElementById('doneLabel').style.color=dayColor(selDay);
-  const fill=document.getElementById('pbarFill');
-  fill.style.width=`${done/exes.length*100}%`;fill.style.background=dayColor(selDay);
+const exes=WORKOUT[selDay].exercises;
+const done=exes.filter(e=>completed[`${selDay}-${e.id}`]).length;
+document.getElementById('doneLabel').textContent=`${done}/${exes.length} done`;
+document.getElementById('doneLabel').style.color=dayColor(selDay);
+const fill=document.getElementById('pbarFill');
+fill.style.width=`${done/exes.length*100}%`;fill.style.background=dayColor(selDay);
 }
-
 function renderExList(){
-  const day=WORKOUT[selDay];const c=dayColor(selDay);
-  const wrap=document.getElementById('exlist');wrap.innerHTML='';
-  day.exercises.forEach(ex=>{
-    const prog=getProg(ex.id);
-    const fS=ex.sets+prog.sets,fR=ex.reps+prog.reps;
-    const isDone=!!completed[`${selDay}-${ex.id}`];
-    const isAdv=!!showAdv[ex.id],isProg=!!showProg[ex.id];
-    const hasChange=prog.sets!==0||prog.reps!==0;
-    const rDisp=ex.repUnit?`<span class="pill-val sm" style="color:${c}99;">${ex.repUnit}</span>`
-      :`<span class="pill-val" style="color:${prog.reps!==0?c:'#fff'};">${fR}</span>`;
-
-    const card=document.createElement('div');
-    card.className='excard'+(isDone?' done':'');
-    card.style.background=isDone?'#091209':'var(--card)';
-    card.style.borderColor=isDone?'#22c55e25':'var(--border)';
-
-    card.innerHTML=`
-    <div class="emain">
-      <div class="exhead">
-        <div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span class="exname" style="color:${isDone?'#22c55e':'#fff'};">${ex.name}</span>
-            ${isDone?'<span style="font-size:10px">✅</span>':''}
-          </div>
-          <div class="exmuscle">${ex.muscle}</div>
-        </div>
-        <button class="markbtn" style="border-color:${isDone?'#22c55e':'#252530'};background:${isDone?'#22c55e18':'transparent'};color:${isDone?'#22c55e':'#333'};" data-action="done" data-ex="${ex.id}">${isDone?'Done ✓':'Mark done'}</button>
-      </div>
-      <div class="pills">
-        <div class="pill"><div class="pill-lbl">Sets</div><span class="pill-val" style="color:${prog.sets!==0?c:'#fff'};">${fS}</span></div>
-        <div class="pill"><div class="pill-lbl">${ex.repUnit?'Volume':'Reps'}</div>${rDisp}</div>
-        <div class="pill"><div class="pill-lbl">Rest</div><span class="pill-val" style="font-size:14px;color:#3a3a48;">${ex.rest}</span></div>
-      </div>
-      <div class="arow">
-        <button class="abtn" style="${isProg?`border-color:${c}40;color:${c};background:${c}10;`:(hasChange?`color:${c};`:'')};" data-action="prog" data-ex="${ex.id}">
-          📈 ${hasChange?`+${prog.sets}s +${prog.reps}r`:'Progress'} <span style="font-size:8px">${isProg?'▲':'▼'}</span>
-        </button>
-        <button class="abtn" style="${isAdv?`border-color:${c}40;color:${c};background:${c}10;`:''}" data-action="adv" data-ex="${ex.id}">
-          ⚡ Advanced <span style="font-size:8px">${isAdv?'▲':'▼'}</span>
-        </button>
-      </div>
-    </div>
-    <div class="ddrop prog-dd ${isProg?'show':''}">
-      <div class="dd-title" style="color:${c};">📈 Adjust Progression</div>
-      <div class="progctrls">
-        <div class="progctrl">
-          <div class="pclbl">Sets</div>
-          <div class="pcrow">
-            <button class="pcbtn" style="background:#1a1a20;" data-action="adj" data-ex="${ex.id}" data-field="sets" data-delta="-1" ${fS<=1?'disabled':''}>−</button>
-            <div><div class="pcval" style="color:${prog.sets!==0?c:'#fff'};">${fS}</div>${prog.sets!==0?`<div class="pcdelta" style="color:${c};">${prog.sets>0?'+'+prog.sets:prog.sets} from ${ex.sets}</div>`:''}</div>
-            <button class="pcbtn" style="background:${c}35;" data-action="adj" data-ex="${ex.id}" data-field="sets" data-delta="1">+</button>
-          </div>
-        </div>
-        ${!ex.repUnit?`
-        <div class="progctrl">
-          <div class="pclbl">Reps</div>
-          <div class="pcrow">
-            <button class="pcbtn" style="background:#1a1a20;" data-action="adj" data-ex="${ex.id}" data-field="reps" data-delta="-1" ${fR<=1?'disabled':''}>−</button>
-            <div><div class="pcval" style="color:${prog.reps!==0?c:'#fff'};">${fR}</div>${prog.reps!==0?`<div class="pcdelta" style="color:${c};">${prog.reps>0?'+'+prog.reps:prog.reps} from ${ex.reps}</div>`:''}</div>
-            <button class="pcbtn" style="background:${c}35;" data-action="adj" data-ex="${ex.id}" data-field="reps" data-delta="1">+</button>
-          </div>
-        </div>`:`<p style="flex:1;font-size:9px;color:#2a2a30;text-align:center;align-self:center;">Timed — increase sets to progress</p>`}
-      </div>
-    </div>
-    <div class="ddrop adv-dd ${isAdv?'show':''}">
-      <div class="dd-title" style="color:${c};">🔺 Advanced Progressions</div>
-      <div class="advlist">
-        ${ex.advanced.map(a=>`
-          <div class="advitem" style="border-left:3px solid ${c};">
-            <div class="aitop"><span class="ainame">${a.name}</span><span class="aitag" style="color:${c};background:${c}15;">${a.sets}×${a.reps}${a.repUnit||''}</span></div>
-            <p class="ainote">${a.note}</p>
-          </div>`).join('')}
-      </div>
-    </div>`;
-
-    wrap.appendChild(card);
-  });
-
-  wrap.querySelectorAll('[data-action="done"]').forEach(b=>b.addEventListener('click',()=>{
-    const k=`${selDay}-${b.dataset.ex}`;completed[k]=!completed[k];renderExList();renderProgressBar();updateHeader();
-  }));
-  wrap.querySelectorAll('[data-action="prog"]').forEach(b=>b.addEventListener('click',()=>{
-    showProg[b.dataset.ex]=!showProg[b.dataset.ex];renderExList();
-  }));
-  wrap.querySelectorAll('[data-action="adv"]').forEach(b=>b.addEventListener('click',()=>{
-    showAdv[b.dataset.ex]=!showAdv[b.dataset.ex];renderExList();
-  }));
-  wrap.querySelectorAll('[data-action="adj"]').forEach(b=>b.addEventListener('click',()=>{
-    adj(b.dataset.ex,b.dataset.field,parseInt(b.dataset.delta));
-  }));
+const day=WORKOUT[selDay];const c=dayColor(selDay);
+const wrap=document.getElementById('exlist');wrap.innerHTML='';
+day.exercises.forEach(ex=>{
+const prog=getProg(ex.id);
+const fS=ex.sets+prog.sets,fR=ex.reps+prog.reps;
+const isDone=!!completed[`${selDay}-${ex.id}`];
+const isAdv=!!showAdv[ex.id],isProg=!!showProg[ex.id];
+const hasChange=prog.sets!==0||prog.reps!==0;
+const rDisp=ex.repUnit?`<span class="pill-val sm" style="color:${c}99;">${ex.repUnit}</span>`
+:`<span class="pill-val" style="color:${prog.reps!==0?c:'#fff'};">${fR}</span>`;
+const card=document.createElement('div');
+card.className='excard'+(isDone?' done':'');
+card.style.background=isDone?'#091209':'var(--card)';
+card.style.borderColor=isDone?'#22c55e25':'var(--border)';
+card.innerHTML=`
+<div class="emain">
+<div class="exhead">
+<div>
+<div style="display:flex;align-items:center;gap:6px;">
+<span class="exname" style="color:${isDone?'#22c55e':'#fff'};">${ex.name}</span>
+${isDone?'<span style="font-size:10px">✅</span>':''}
+</div>
+<div class="exmuscle">${ex.muscle}</div>
+</div>
+<button class="markbtn" style="border-color:${isDone?'#22c55e':'#252530'};background:${isDone?'#22c55e18':'transparent'};color:${isDone?'#22c55e':'#333'};" data-action="done" data-ex="${ex.id}">${isDone?'Done ✓':'Mark done'}</button>
+</div>
+<div class="pills">
+<div class="pill"><div class="pill-lbl">Sets</div><span class="pill-val" style="color:${prog.sets!==0?c:'#fff'};">${fS}</span></div>
+<div class="pill"><div class="pill-lbl">${ex.repUnit?'Volume':'Reps'}</div>${rDisp}</div>
+<div class="pill"><div class="pill-lbl">Rest</div><span class="pill-val" style="font-size:14px;color:#3a3a48;">${ex.rest}</span></div>
+</div>
+<div class="arow">
+<button class="abtn" style="${isProg?`border-color:${c}40;color:${c};background:${c}10;`:(hasChange?`color:${c};`:'')};" data-action="prog" data-ex="${ex.id}">
+📈 ${hasChange?`+${prog.sets}s +${prog.reps}r`:'Progress'} <span style="font-size:8px">${isProg?'▲':'▼'}</span>
+</button>
+<button class="abtn" style="${isAdv?`border-color:${c}40;color:${c};background:${c}10;`:''}" data-action="adv" data-ex="${ex.id}">
+⚡ Advanced <span style="font-size:8px">${isAdv?'▲':'▼'}</span>
+</button>
+</div>
+</div>
+<div class="ddrop prog-dd ${isProg?'show':''}">
+<div class="dd-title" style="color:${c};">📈 Adjust Progression</div>
+<div class="progctrls">
+<div class="progctrl">
+<div class="pclbl">Sets</div>
+<div class="pcrow">
+<button class="pcbtn" style="background:#1a1a20;" data-action="adj" data-ex="${ex.id}" data-field="sets" data-delta="-1" ${fS<=1?'disabled':''}>−</button>
+<div><div class="pcval" style="color:${prog.sets!==0?c:'#fff'};">${fS}</div>${prog.sets!==0?`<div class="pcdelta" style="color:${c};">${prog.sets>0?'+'+prog.sets:prog.sets} from ${ex.sets}</div>`:''}</div>
+<button class="pcbtn" style="background:${c}35;" data-action="adj" data-ex="${ex.id}" data-field="sets" data-delta="1">+</button>
+</div>
+</div>
+${!ex.repUnit?`
+<div class="progctrl">
+<div class="pclbl">Reps</div>
+<div class="pcrow">
+<button class="pcbtn" style="background:#1a1a20;" data-action="adj" data-ex="${ex.id}" data-field="reps" data-delta="-1" ${fR<=1?'disabled':''}>−</button>
+<div><div class="pcval" style="color:${prog.reps!==0?c:'#fff'};">${fR}</div>${prog.reps!==0?`<div class="pcdelta" style="color:${c};">${prog.reps>0?'+'+prog.reps:prog.reps} from ${ex.reps}</div>`:''}</div>
+<button class="pcbtn" style="background:${c}35;" data-action="adj" data-ex="${ex.id}" data-field="reps" data-delta="1">+</button>
+</div>
+</div>`:`<p style="flex:1;font-size:9px;color:#2a2a30;text-align:center;align-self:center;">Timed — increase sets to progress</p>`}
+</div>
+</div>
+<div class="ddrop adv-dd ${isAdv?'show':''}">
+<div class="dd-title" style="color:${c};">🔺 Advanced Progressions</div>
+<div class="advlist">
+${ex.advanced.map(a=>`
+<div class="advitem" style="border-left:3px solid ${c};">
+<div class="aitop"><span class="ainame">${a.name}</span><span class="aitag" style="color:${c};background:${c}15;">${a.sets}×${a.reps}${a.repUnit||''}</span></div>
+<p class="ainote">${a.note}</p>
+</div>`).join('')}
+</div>
+</div>`;
+wrap.appendChild(card);
+});
+wrap.querySelectorAll('[data-action="done"]').forEach(b=>b.addEventListener('click',()=>{
+const k=`${selDay}-${b.dataset.ex}`;completed[k]=!completed[k];renderExList();renderProgressBar();updateHeader();saveState();
+}));
+wrap.querySelectorAll('[data-action="prog"]').forEach(b=>b.addEventListener('click',()=>{
+showProg[b.dataset.ex]=!showProg[b.dataset.ex];renderExList();
+}));
+wrap.querySelectorAll('[data-action="adv"]').forEach(b=>b.addEventListener('click',()=>{
+showAdv[b.dataset.ex]=!showAdv[b.dataset.ex];renderExList();
+}));
+wrap.querySelectorAll('[data-action="adj"]').forEach(b=>b.addEventListener('click',()=>{
+adj(b.dataset.ex,b.dataset.field,parseInt(b.dataset.delta));
+}));
 }
-
 function updateHeader(){
-  const streak=DAYS.filter(d=>WORKOUT[d].exercises.every(e=>completed[`${d}-${e.id}`])).length;
-  document.getElementById('kpiStreak').textContent=streak;
-  const weekDone=DAYS.filter(d=>WORKOUT[d].exercises.some(e=>completed[`${d}-${e.id}`])).length;
-  document.getElementById('kpiWeek').textContent=`${weekDone}/6`;
-  const exes=WORKOUT[selDay].exercises;
-  const pct=Math.round(exes.filter(e=>completed[`${selDay}-${e.id}`]).length/exes.length*100);
-  document.getElementById('kpiToday').textContent=`${pct}%`;
+const streak=DAYS.filter(d=>WORKOUT[d].exercises.every(e=>completed[`${d}-${e.id}`])).length;
+document.getElementById('kpiStreak').textContent=streak;
+const weekDone=DAYS.filter(d=>WORKOUT[d].exercises.some(e=>completed[`${d}-${e.id}`])).length;
+document.getElementById('kpiWeek').textContent=`${weekDone}/6`;
+const exes=WORKOUT[selDay].exercises;
+const pct=Math.round(exes.filter(e=>completed[`${selDay}-${e.id}`]).length/exes.length*100);
+document.getElementById('kpiToday').textContent=`${pct}%`;
 }
-
 function renderAll(){renderDayTabs();renderProgressBar();renderExList();updateHeader();}
-
 // ══════════════════════════════════════════════
 // CIRCLE CHART SVG helper
 // ══════════════════════════════════════════════
 function circleChartSVG(pct,color,size=70,stroke=6){
-  const r=(size-stroke)/2,cx=size/2,cy=size/2;
-  const circ=2*Math.PI*r,offset=circ-(pct/100)*circ;
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#1a1a20" stroke-width="${stroke}"/>
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}"
-      stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"
-      transform="rotate(-90 ${cx} ${cy})"/>
-    <text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="middle"
-      fill="#fff" font-size="${pct>=100?13:14}" font-weight="800" font-family="Inter,sans-serif">${pct}%</text>
-  </svg>`;
+const r=(size-stroke)/2,cx=size/2,cy=size/2;
+const circ=2*Math.PI*r,offset=circ-(pct/100)*circ;
+return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#1a1a20" stroke-width="${stroke}"/>
+<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}"
+stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"
+transform="rotate(-90 ${cx} ${cy})"/>
+<text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="middle"
+fill="#fff" font-size="${pct>=100?13:14}" font-weight="800" font-family="Inter,sans-serif">${pct}%</text>
+</svg>`;
 }
-
 // ══════════════════════════════════════════════
 // PROGRESS PAGE — circle charts
 // ══════════════════════════════════════════════
 function renderProgressPage(){
-  // Per-day ring row
-  const wr=document.getElementById('weekRings');
-  wr.innerHTML=DAYS.map(d=>{
-    const exes=WORKOUT[d].exercises;
-    const done=exes.filter(e=>completed[`${d}-${e.id}`]).length;
-    const pct=Math.round(done/exes.length*100);
-    const c=dayColor(d);
-    return `<div class="day-ring-card">
-      ${circleChartSVG(pct,c,52,5)}
-      <div class="drc-name" style="color:${c};">${d.slice(0,3)}</div>
-    </div>`;
-  }).join('');
-
-  // Category volume circles
-  const cats=[
-    {name:"Push",days:["Monday"],color:"#f97316",emoji:"🔥"},
-    {name:"Pull",days:["Tuesday"],color:"#a855f7",emoji:"💪"},
-    {name:"Legs",days:["Wednesday"],color:"#22c55e",emoji:"🦵"},
-    {name:"Core",days:["Thursday"],color:"#ef4444",emoji:"🔴"},
-    {name:"Arms",days:["Friday"],color:"#06b6d4",emoji:"💙"},
-    {name:"Power",days:["Saturday"],color:"#f59e0b",emoji:"⚡"},
-  ];
-  const cg=document.getElementById('circleGrid');
-  cg.innerHTML=cats.map(cat=>{
-    let total=0,done=0;
-    cat.days.forEach(d=>{
-      WORKOUT[d].exercises.forEach(e=>{
-        total++;
-        if(completed[`${d}-${e.id}`]) done++;
-      });
-    });
-    const pct=total?Math.round(done/total*100):0;
-    return `<div class="circle-card">
-      ${circleChartSVG(pct,cat.color,70,6)}
-      <div class="cc-label">${cat.emoji} ${cat.name}</div>
-      <div class="cc-val" style="color:${cat.color};">${done}/${total}</div>
-    </div>`;
-  }).join('');
-
-  // Day summaries
-  const ds=document.getElementById('daySummaries');
-  ds.innerHTML=DAYS.map(d=>{
-    const c=dayColor(d);
-    const rows=WORKOUT[d].exercises.map(ex=>{
-      const prog=(progressions[d]&&progressions[d][ex.id])||{sets:0,reps:0};
-      const fs=ex.sets+prog.sets,fr=ex.reps+prog.reps;
-      const changed=prog.sets||prog.reps;
-      return `<div class="tc-row"><span class="tc-ex">${ex.name}</span><span class="tc-val" style="color:${changed?c:'#2a2a30'};">${fs}×${ex.repUnit?ex.repUnit:fr}</span></div>`;
-    }).join('');
-    return `<div class="target-card">
-      <div class="tc-head"><div class="tc-dot" style="background:${c};"></div><span class="tc-name">${d}</span><span class="tc-label">· ${DAY_LABELS[d]}</span></div>
-      ${rows}
-    </div>`;
-  }).join('');
+// Per-day ring row
+const wr=document.getElementById('weekRings');
+wr.innerHTML=DAYS.map(d=>{
+const exes=WORKOUT[d].exercises;
+const done=exes.filter(e=>completed[`${d}-${e.id}`]).length;
+const pct=Math.round(done/exes.length*100);
+const c=dayColor(d);
+return `<div class="day-ring-card">
+${circleChartSVG(pct,c,52,5)}
+<div class="drc-name" style="color:${c};">${d.slice(0,3)}</div>
+</div>`;
+}).join('');
+// Category volume circles
+const cats=[
+{name:"Push",days:["Monday"],color:"#f97316",emoji:"🔥"},
+{name:"Pull",days:["Tuesday"],color:"#a855f7",emoji:"💪"},
+{name:"Legs",days:["Wednesday"],color:"#22c55e",emoji:"🦵"},
+{name:"Core",days:["Thursday"],color:"#ef4444",emoji:"🔴"},
+{name:"Arms",days:["Friday"],color:"#06b6d4",emoji:"💙"},
+{name:"Power",days:["Saturday"],color:"#f59e0b",emoji:"⚡"},
+];
+const cg=document.getElementById('circleGrid');
+cg.innerHTML=cats.map(cat=>{
+let total=0,done=0;
+cat.days.forEach(d=>{
+WORKOUT[d].exercises.forEach(e=>{
+total++;
+if(completed[`${d}-${e.id}`]) done++;
+});
+});
+const pct=total?Math.round(done/total*100):0;
+return `<div class="circle-card">
+${circleChartSVG(pct,cat.color,70,6)}
+<div class="cc-label">${cat.emoji} ${cat.name}</div>
+<div class="cc-val" style="color:${cat.color};">${done}/${total}</div>
+</div>`;
+}).join('');
+// Day summaries
+const ds=document.getElementById('daySummaries');
+ds.innerHTML=DAYS.map(d=>{
+const c=dayColor(d);
+const rows=WORKOUT[d].exercises.map(ex=>{
+const prog=(progressions[d]&&progressions[d][ex.id])||{sets:0,reps:0};
+const fs=ex.sets+prog.sets,fr=ex.reps+prog.reps;
+const changed=prog.sets||prog.reps;
+return `<div class="tc-row"><span class="tc-ex">${ex.name}</span><span class="tc-val" style="color:${changed?c:'#2a2a30'};">${fs}×${ex.repUnit?ex.repUnit:fr}</span></div>`;
+}).join('');
+return `<div class="target-card">
+<div class="tc-head"><div class="tc-dot" style="background:${c};"></div><span class="tc-name">${d}</span><span class="tc-label">· ${DAY_LABELS[d]}</span></div>
+${rows}
+</div>`;
+}).join('');
 }
-
 // ══════════════════════════════════════════════
 // TIMER
 // ══════════════════════════════════════════════
 function buildPresets(){
-  const wrap=document.getElementById('presetGrid');
-  const c=dayColor(selDay);
-  wrap.innerHTML='';
-  TIMER_PRESETS.forEach(s=>{
-    const b=document.createElement('button');
-    b.className='preset-btn';
-    b.textContent=s<60?`${s}s`:`${s>=60&&s%60===0?s/60+'m':`${Math.floor(s/60)}m${s%60}s`}`;
-    b.dataset.secs=s;
-    if(timerSel===s&&!timerDone){b.style.borderColor=c;b.style.background=c+'22';b.style.color=c;}
-    b.addEventListener('click',()=>startTimer(s));
-    wrap.appendChild(b);
-  });
+const wrap=document.getElementById('presetGrid');
+const c=dayColor(selDay);
+wrap.innerHTML='';
+TIMER_PRESETS.forEach(s=>{
+const b=document.createElement('button');
+b.className='preset-btn';
+b.textContent=s<60?`${s}s`:`${s>=60&&s%60===0?s/60+'m':`${Math.floor(s/60)}m${s%60}s`}`;
+b.dataset.secs=s;
+if(timerSel===s&&!timerDone){b.style.borderColor=c;b.style.background=c+'22';b.style.color=c;}
+b.addEventListener('click',()=>startTimer(s));
+wrap.appendChild(b);
+});
 }
 function fmtTime(s){return s>=60?`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`:String(s);}
 function updateRing(){
-  const c=dayColor(selDay);
-  const ring=document.getElementById('timerRing');
-  const rt=document.getElementById('ringTime'),ru=document.getElementById('ringUnit');
-  const pct=timerSel?((timerSel-timerLeft)/timerSel)*100:0;
-  ring.style.strokeDashoffset=CIRC-(pct/100)*CIRC;
-  ring.style.stroke=timerDone?'#22c55e':c;
-  rt.textContent=timerDone?'✓':(timerSel?fmtTime(timerLeft):'—');
-  rt.style.color=timerDone?'#22c55e':'#fff';
-  rt.style.fontSize=timerDone?'16px':'20px';
-  ru.textContent=(!timerDone&&timerSel)?'sec':'';
-  const p=document.getElementById('tPause'),r=document.getElementById('tReset');
-  p.disabled=!timerSel||timerDone;r.disabled=!timerSel;
-  p.textContent=timerRunning?'⏸  Pause':'▶  Start';
-  p.style.background=timerRunning?'#1c0800':c+'22';p.style.color=timerRunning?'#f97316':c;
-  document.getElementById('doneBanner').classList.toggle('show',timerDone);
+const c=dayColor(selDay);
+const ring=document.getElementById('timerRing');
+const rt=document.getElementById('ringTime'),ru=document.getElementById('ringUnit');
+const pct=timerSel?((timerSel-timerLeft)/timerSel)*100:0;
+ring.style.strokeDashoffset=CIRC-(pct/100)*CIRC;
+ring.style.stroke=timerDone?'#22c55e':c;
+rt.textContent=timerDone?'✓':(timerSel?fmtTime(timerLeft):'—');
+rt.style.color=timerDone?'#22c55e':'#fff';
+rt.style.fontSize=timerDone?'16px':'20px';
+ru.textContent=(!timerDone&&timerSel)?'sec':'';
+const p=document.getElementById('tPause'),r=document.getElementById('tReset');
+p.disabled=!timerSel||timerDone;r.disabled=!timerSel;
+p.textContent=timerRunning?'⏸ Pause':'▶ Start';
+p.style.background=timerRunning?'#1c0800':c+'22';p.style.color=timerRunning?'#f97316':c;
+document.getElementById('doneBanner').classList.toggle('show',timerDone);
 }
 function startTimer(s){
-  clearInterval(timerInterval);timerSel=s;timerLeft=s;timerRunning=true;timerDone=false;
-  buildPresets();updateRing();runLoop();
-  try{getACtx().resume();}catch(e){}
+clearInterval(timerInterval);timerSel=s;timerLeft=s;timerRunning=true;timerDone=false;
+buildPresets();updateRing();runLoop();
+try{getACtx().resume();}catch(e){}
 }
 function runLoop(){
-  clearInterval(timerInterval);if(!timerRunning) return;
-  timerInterval=setInterval(()=>{
-    timerLeft--;
-    if(timerLeft<=3&&timerLeft>0) playTick();
-    if(timerLeft<=0){clearInterval(timerInterval);timerLeft=0;timerRunning=false;timerDone=true;playChime();buildPresets();}
-    updateRing();
-  },1000);
+clearInterval(timerInterval);if(!timerRunning) return;
+timerInterval=setInterval(()=>{
+timerLeft--;
+if(timerLeft<=3&&timerLeft>0) playTick();
+if(timerLeft<=0){clearInterval(timerInterval);timerLeft=0;timerRunning=false;timerDone=true;playChime();buildPresets();}
+updateRing();
+},1000);
 }
 document.getElementById('tPause').addEventListener('click',()=>{
-  if(!timerSel||timerDone) return;
-  timerRunning=!timerRunning;updateRing();
-  if(timerRunning) runLoop(); else clearInterval(timerInterval);
+if(!timerSel||timerDone) return;
+timerRunning=!timerRunning;updateRing();
+if(timerRunning) runLoop(); else clearInterval(timerInterval);
 });
 document.getElementById('tReset').addEventListener('click',()=>{
-  clearInterval(timerInterval);timerRunning=false;timerDone=false;timerLeft=timerSel||0;buildPresets();updateRing();
+clearInterval(timerInterval);timerRunning=false;timerDone=false;timerLeft=timerSel||0;buildPresets();updateRing();
 });
-
 // ══════════════════════════════════════════════
 // STRETCH
 // ══════════════════════════════════════════════
 let stretchBound=false;
 function renderStretchList(){
-  const wrap=document.getElementById('stretchList');
-  wrap.innerHTML=STRETCHES.map((s,i)=>{
-    const done=!!stretchDone[i];
-    return `<div class="stretch-item ${done?'done':''}" data-idx="${i}">
-      <div class="s-check">${done?'✓':''}</div>
-      <div><div class="s-name">${s.name}</div><div class="s-meta">${s.duration} · ${s.cue}</div></div>
-    </div>`;
-  }).join('');
-  wrap.querySelectorAll('.stretch-item').forEach(el=>el.addEventListener('click',()=>{
-    stretchDone[el.dataset.idx]=!stretchDone[el.dataset.idx];renderStretchList();updateStretchBadge();
-  }));
+const wrap=document.getElementById('stretchList');
+wrap.innerHTML=STRETCHES.map((s,i)=>{
+const done=!!stretchDone[i];
+return `<div class="stretch-item ${done?'done':''}" data-idx="${i}">
+<div class="s-check">${done?'✓':''}</div>
+<div><div class="s-name">${s.name}</div><div class="s-meta">${s.duration} · ${s.cue}</div></div>
+</div>`;
+}).join('');
+wrap.querySelectorAll('.stretch-item').forEach(el=>el.addEventListener('click',()=>{
+stretchDone[el.dataset.idx]=!stretchDone[el.dataset.idx];renderStretchList();updateStretchBadge();saveState();
+}));
 }
 function updateStretchBadge(){
-  const n=Object.values(stretchDone).filter(Boolean).length;
-  const b=document.getElementById('sBadge');
-  b.style.display=n>0?'inline-block':'none';b.textContent=`${n}/${STRETCHES.length}`;
+const n=Object.values(stretchDone).filter(Boolean).length;
+const b=document.getElementById('sBadge');
+b.style.display=n>0?'inline-block':'none';b.textContent=`${n}/${STRETCHES.length}`;
 }
 function initStretch(){
-  renderStretchList();updateStretchBadge();
-  if(!stretchBound){
-    document.getElementById('stretchToggle').addEventListener('click',()=>{
-      const open=document.getElementById('stretchBody').classList.toggle('open');
-      document.getElementById('sChev').textContent=open?'▲':'▼';
-    });
-    stretchBound=true;
-  }
+renderStretchList();updateStretchBadge();
+if(!stretchBound){
+document.getElementById('stretchToggle').addEventListener('click',()=>{
+const open=document.getElementById('stretchBody').classList.toggle('open');
+document.getElementById('sChev').textContent=open?'▲':'▼';
+});
+stretchBound=true;
 }
-
+}
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
 renderAll();buildPresets();updateRing();initStretch();
+loadState();
 </script>
 </body>
 </html>
+
