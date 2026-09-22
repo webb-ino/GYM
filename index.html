@@ -312,27 +312,27 @@ const DAY_COLORS={Monday:"#f97316",Tuesday:"#a855f7",Wednesday:"#22c55e",Thursda
 const DAY_LABELS={Monday:"Push",Tuesday:"Pull",Wednesday:"Legs",Thursday:"Core",Friday:"Arms",Saturday:"Explosive"};
 const WORKOUT={
 Monday:{exercises:[
-{id:"archer",name:"Archer Push-Ups",sets:4,reps:8,rest:"60s",muscle:"Chest, Triceps",advanced:[
+{id:"archer",name:"Archer Push-Ups",sets:3,reps:12,rest:"60s",muscle:"Chest, Triceps",advanced:[
 {name:"One-Arm Push-Up Negatives",sets:3,reps:5,note:"Lower slowly on one arm, push back with both"},
 {name:"Pseudo Planche Push-Ups",sets:3,reps:6,note:"Hands by hips, lean forward — shoulder crusher"},
 {name:"Ring Archer Push-Ups",sets:3,reps:6,note:"Gymnastic rings + archer = elite difficulty"},
 ]},
-{id:"wide",name:"Wide Push-Ups",sets:3,reps:12,rest:"60s",muscle:"Outer Chest",advanced:[
+{id:"wide",name:"Wide Push-Ups",sets:3,reps:15,rest:"60s",muscle:"Outer Chest",advanced:[
 {name:"Wide Decline Push-Ups",sets:3,reps:10,note:"Feet elevated + wide grip = upper outer chest"},
 {name:"Wide Clap Push-Ups",sets:3,reps:8,note:"Explosive wide push — power development"},
 {name:"Wide Ring Push-Ups",sets:3,reps:10,note:"Rings destabilise the wide position massively"},
 ]},
-{id:"pseudo",name:"Pseudo Planche Push-Ups",sets:3,reps:8,rest:"60s",muscle:"Chest, Shoulders",advanced:[
+{id:"pseudo",name:"Pseudo Planche Push-Ups",sets:3,reps:10,rest:"60s",muscle:"Chest, Shoulders",advanced:[
 {name:"Planche Lean Push-Ups",sets:3,reps:8,note:"Push forward not up — chest takes everything"},
 {name:"Advanced Tuck Planche Hold",sets:3,reps:1,repUnit:"×10s",note:"Hips tucked, feet off floor"},
 {name:"Straddle Planche Attempts",sets:3,reps:1,repUnit:"×5s",note:"Legs spread, feet off floor — years of work"},
 ]},
-{id:"decdia",name:"Decline Diamond Push-Ups",sets:3,reps:10,rest:"45s",muscle:"Upper Chest, Triceps",advanced:[
+{id:"decdia",name:"Decline Diamond Push-Ups",sets:3,reps:15,rest:"45s",muscle:"Upper Chest, Triceps",advanced:[
 {name:"Weighted Decline Diamond",sets:3,reps:8,note:"Plate/backpack on back for progressive overload"},
 {name:"Ring Diamond Push-Ups",sets:3,reps:8,note:"Rings add brutal instability"},
 {name:"Clap Diamond Push-Ups",sets:3,reps:6,note:"Explosive version — power + tricep strength"},
 ]},
-{id:"deeprom",name:"Deep ROM Push-Ups",sets:3,reps:8,rest:"45s",muscle:"Full Chest Stretch",advanced:[
+{id:"deeprom",name:"Deep ROM Push-Ups",sets:3,reps:10,rest:"45s",muscle:"Full Chest Stretch",advanced:[
 {name:"Deficit Push-Ups on Books",sets:3,reps:10,note:"Hands on books/dumbbells for deeper range"},
 {name:"Ring Deep ROM",sets:3,reps:8,note:"Rings allow maximum stretch at the bottom"},
 {name:"Archer Deep ROM",sets:3,reps:6,note:"Combine archer lean with deep range — elite"},
@@ -342,24 +342,23 @@ Monday:{exercises:[
 {name:"One-Arm Hold",sets:3,reps:1,repUnit:"×8s each",note:"Balance in top position on one arm"},
 {name:"Ring Push-Up Hold",sets:3,reps:1,repUnit:"×15s",note:"Rings flared out slightly — shoulder stability"},
 ]},
-]},
-Tuesday:{exercises:[
-{id:"pullup",name:"Pull-Ups",sets:4,reps:6,rest:"90s",muscle:"Back, Biceps",advanced:[
+]},Tuesday:{exercises:[
+{id:"pullup",name:"Pull-Ups",sets:3,reps:8,rest:"90s",muscle:"Back, Biceps",advanced:[
 {name:"Weighted Pull-Ups",sets:4,reps:4,note:"Backpack with books — progressive overload"},
 {name:"Archer Pull-Ups",sets:3,reps:4,note:"Shift weight side-to-side — isolates each arm"},
 {name:"L-Sit Pull-Ups",sets:3,reps:4,note:"Legs parallel throughout — core+pull combo"},
 ]},
-{id:"chinup",name:"Chin-Ups",sets:3,reps:7,rest:"90s",muscle:"Back, Biceps",advanced:[
+{id:"chinup",name:"Chin-Ups",sets:3,reps:9,rest:"90s",muscle:"Back, Biceps",advanced:[
 {name:"Weighted Chin-Ups",sets:3,reps:5,note:"Add load — progression is the goal"},
 {name:"Slow Negative Chin-Ups",sets:3,reps:5,note:"6–8 second lower — max muscle damage"},
 {name:"Commando Chin-Ups",sets:3,reps:5,note:"Alternate which side of bar you pull toward"},
 ]},
-{id:"superman",name:"Superman Pulls",sets:3,reps:15,rest:"45s",muscle:"Lower Back, Glutes",advanced:[
+{id:"superman",name:"Superman Pulls",sets:3,reps:18,rest:"45s",muscle:"Lower Back, Glutes",advanced:[
 {name:"Weighted Superman",sets:3,reps:12,note:"Hold a light weight in hands while extending"},
 {name:"Superman Hold",sets:3,reps:1,repUnit:"×20s",note:"Hold top position — isometric back strength"},
 {name:"Band Superman",sets:3,reps:12,note:"Band around feet adds resistance at top"},
 ]},
-{id:"backext",name:"Back Extensions",sets:3,reps:15,rest:"45s",muscle:"Lower Back, Hamstrings",advanced:[
+{id:"backext",name:"Back Extensions",sets:3,reps:18,rest:"45s",muscle:"Lower Back, Hamstrings",advanced:[
 {name:"Weighted Back Extensions",sets:3,reps:12,note:"Hold a weight plate or book on chest"},
 {name:"Tempo Back Extensions",sets:3,reps:10,note:"3s up, 1s hold, 3s down — feels brutal"},
 {name:"Single-Leg Back Extensions",sets:3,reps:10,note:"One leg at a time — balance + strength"},
@@ -374,8 +373,7 @@ Tuesday:{exercises:[
 {name:"Single-Arm Towel Hold",sets:3,reps:1,repUnit:"×15s each",note:"One arm at a time for imbalance correction"},
 {name:"Weighted Towel Hold",sets:3,reps:1,repUnit:"×15s",note:"Backpack on — adds real load to the isometric"},
 ]},
-]},
-Wednesday:{exercises:[
+]},Wednesday:{exercises:[
 {id:"bss",name:"Bulgarian Split Squats",sets:4,reps:10,rest:"60s",muscle:"Quads, Glutes",advanced:[
 {name:"Jumping BSS",sets:3,reps:8,note:"Explosive jump from bottom — builds power"},
 {name:"Deficit BSS",sets:3,reps:8,note:"Front foot on step — deeper range of motion"},
@@ -927,4 +925,3 @@ loadState();
 </script>
 </body>
 </html>
-
